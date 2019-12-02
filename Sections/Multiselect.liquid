@@ -13,7 +13,12 @@
       var form = multiselectwrap.closest('form');
       var shopifyAjaxAddURL = '/cart/update.js';       
       var shopifyCartURL = '/cart';
-                                                                       
+      
+      // in case back button
+      window.addEventListener("pageshow", function() {
+         form.reset();
+      });
+      
                                 
       // multiselectform();   
       function multiselectform() {                                    
@@ -83,8 +88,9 @@
       #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
    </style>
    <script>
+      document.querySelectorAll('.selector-wrapper')[{{ option_index }}].style.display = "none"; 
       window.onload = function(e){ 
-          document.querySelectorAll('.selector-wrapper')[{{ option_index }}].style.display = "none"; 
+      document.querySelectorAll('.selector-wrapper')[{{ option_index }}].style.display = "none"; 
       }
    </script>
    {% assign downcased_option = swatch | downcase %}
@@ -115,13 +121,18 @@
          {% assign stock = 999 %}
          {% endif %}   
          {% if option_index == lastoption %} 
-         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if variant == product.selected_or_first_available_variant %} checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
+         {% if block.settings.quantity %}
+         <div class="quantity">
+            <span>0</span>
+         </div>
+         {% endif %}
          <label for="swatch-{{ option_index }}-{{ value | handle }}">
+         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant.available %}disabled{% endunless %}>
          {{ variant.title }} - {{ variant.price | money }}
          </label>
          {% else %}
-         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="radio" name="id-{{ option_index }}" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if forloop.first %} checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
          <label for="swatch-{{ option_index }}-{{ value | handle }}">
+         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="radio" name="id-{{ option_index }}" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if forloop.first %} checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
          {{ variant.option1 }}
          </label>
          {% endif %}
@@ -137,7 +148,65 @@
       </script>
       {% endif %}
       {% endunless %}
-      {% endfor %}
+      {% endfor %} 
+      {% if block.settings.quantity and option_index == lastoption %}
+      <div class="Multiselect-clear">
+         <a href="#">Clear</a>
+      </div>
+      {% endif %} 
+      {% if block.settings.quantity %}
+      <script> 
+         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="0"] input[type=checkbox]');
+         if (quantitycheckboxes) {
+         quantitycheckboxes.forEach(function(quantitycheckbox) { 
+         
+              quantitycheckbox.addEventListener( 'click', function(e) { 
+                     var quantitywrap = this.parentElement.previousElementSibling;
+                     var quantityspan = quantitywrap.getElementsByTagName('span')[0];
+                     var currentquantity = Number(quantityspan.innerHTML);
+                     var inventory =  Number(this.getAttribute('inventory'));
+                     // add quantity     
+                  if(currentquantity < inventory) {
+                     quantityspan.innerHTML = ++currentquantity;
+                     this.setAttribute('quantity', quantityspan.innerHTML);
+         
+                  }
+                // handle animation of quantity
+                if(currentquantity > 1) {
+                 quantitywrap.classList.add('quantityup'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
+                  function quantityup(e) {
+                    // remove class
+                    quantitywrap.classList.remove('quantityup');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                  }
+                }
+                // End Handle
+           
+               
+                if(this.checked === false ) {
+                 this.checked = true; 
+                 e.preventDefault(); 
+                }
+               
+              });
+         });  
+         }
+         // add clear function
+         {% if option_index == lastoption %} 
+         var clear = form.querySelector('.swatch[data-option-index="0"] .Multiselect-clear');
+         clear.addEventListener( 'click', function(e) {
+          quantitycheckboxes.forEach(function(quantitycheckbox) { 
+             quantitycheckbox.checked = false;
+             quantitycheckbox.setAttribute('quantity', 1);
+             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+          }); 
+         });
+         {% endif %}   
+      </script>
+      {% endif %}
    </div>
    {% endif %}
    {% if product.options.size > 1 %} 
@@ -169,13 +238,18 @@
          {% endif %}    
          <div id="{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="swatch-element value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
             {% if option_index == lastoption %} 
-            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
+            {% if block.settings.quantity %}
+            <div class="quantity">
+               <span>0</span>
+            </div>
+            {% endif %}
             <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
+            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
             {{ variant1.option2 }} - {{ variant1.price | money }}
             </label>
             {% else %}
-            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="radio" name="id-{{ option_index }}-{{ value | handle }}" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1" {% if optionloop == 0 %} checked{% endif %} >
             <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
+            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="radio" name="id-{{ option_index }}-{{ value | handle }}" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1" {% if optionloop == 0 %} checked{% endif %} >
             {{ variant1.option2 }}
             </label>
             {% endif %}
@@ -199,11 +273,16 @@
          {% endfor %}
          {% assign values = values | join: ',' %}
          {% assign values = values | append: ',' | append: value %} 
-         {% assign values = values | split: ',' %} 
+         {% assign values = values | split: ',' %}
+         {% if block.settings.quantity and option_index == lastoption %}
+         <div class="Multiselect-clear">
+            <a href="#">Clear</a>
+         </div>
+         {% endif %}
       </div>
    </div>
    {% endunless %}
-   {% endfor %}
+   {% endfor %} 
    <script>
       // make visibility it reliant on first option
            
@@ -226,6 +305,60 @@
                }
               });
          });
+      
+         {% if block.settings.quantity %}
+         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="1"] input[type=checkbox]');
+         if (quantitycheckboxes) {
+         quantitycheckboxes.forEach(function(quantitycheckbox) { 
+      
+              quantitycheckbox.addEventListener( 'click', function(e) { 
+                     var quantitywrap = this.parentElement.previousElementSibling;
+                     var quantityspan = quantitywrap.getElementsByTagName('span')[0];
+                     var currentquantity = Number(quantityspan.innerHTML);
+                     var inventory =  Number(this.getAttribute('inventory'));
+                     // add quantity     
+                  if(currentquantity < inventory) {
+                     quantityspan.innerHTML = ++currentquantity;
+                     this.setAttribute('quantity', quantityspan.innerHTML);
+      
+                  }
+                // handle animation of quantity
+                if(currentquantity > 1) {
+                 quantitywrap.classList.add('quantityup'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
+                  function quantityup(e) {
+                    // remove class
+                    quantitywrap.classList.remove('quantityup');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                  }
+                }
+                // End Handle
+           
+               
+                if(this.checked === false ) {
+                 this.checked = true; 
+                 e.preventDefault(); 
+                }
+               
+              });
+         });  
+         }
+         // add clear function
+        {% if option_index == lastoption %} 
+        var clears = form.querySelectorAll('.swatch[data-option-index="1"] .Multiselect-clear');
+        clears.forEach(function(clear) {  
+        clear.addEventListener( 'click', function(e) {
+          quantitycheckboxes.forEach(function(quantitycheckbox) { 
+             quantitycheckbox.checked = false;
+             quantitycheckbox.setAttribute('quantity', 1);
+             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+          }); 
+        });
+        });
+        {% endif %}   
+         {% endif %}
           
    </script>  
 </div>
@@ -265,8 +398,13 @@
    {% assign stock = 999 %}
    {% endif %}
    <div id="{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="swatch-element value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
-      <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
+      {% if block.settings.quantity %}
+      <div class="quantity">
+         <span>0</span>
+      </div>
+      {% endif %} 
       <label for="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}">
+      <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
       {{ variant4.option3 }} - {{ variant4.price | money }}
       </label>
    </div>
@@ -287,6 +425,11 @@
    {% endif %}    
    {% endunless %}
    {% endfor %}
+   {% if block.settings.quantity and option_index == lastoption %}
+   <div class="Multiselect-clear">
+      <a href="#">Clear</a>
+   </div>
+   {% endif %}
 </div>
 {% assign values3 = values3 | join: ',' %}
 {% assign values3 = values3 | append: ',' | append: value3 %} 
@@ -352,6 +495,64 @@
        }
      });
     });
+       
+       
+    {% if block.settings.quantity %}
+         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="2"] input[type=checkbox]');
+         if (quantitycheckboxes) {
+         quantitycheckboxes.forEach(function(quantitycheckbox) { 
+   
+              quantitycheckbox.addEventListener( 'click', function(e) { 
+                     var quantitywrap = this.parentElement.previousElementSibling;
+                     var quantityspan = quantitywrap.getElementsByTagName('span')[0];
+                     var currentquantity = Number(quantityspan.innerHTML);
+                     var inventory =  Number(this.getAttribute('inventory'));
+                     // add quantity     
+                  if(currentquantity < inventory) {
+                     quantityspan.innerHTML = ++currentquantity;
+                     this.setAttribute('quantity', quantityspan.innerHTML);
+   
+                  }
+                // handle animation of quantity
+                if(currentquantity > 1) {
+                 quantitywrap.classList.add('quantityup'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
+                  function quantityup(e) {
+                    // remove class
+                    quantitywrap.classList.remove('quantityup');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                  }
+                }
+                // End Handle
+           
+               
+                if(this.checked === false ) {
+                 this.checked = true; 
+                 e.preventDefault(); 
+                }
+               
+              });
+         });  
+         }
+        // add clear function
+        {% if option_index == lastoption %} 
+        var clears = form.querySelectorAll('.swatch[data-option-index="2"] .Multiselect-clear');
+        clears.forEach(function(clear) {  
+        clear.addEventListener( 'click', function(e) {
+          quantitycheckboxes.forEach(function(quantitycheckbox) { 
+             quantitycheckbox.checked = false;
+             quantitycheckbox.setAttribute('quantity', 1);
+             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+          }); 
+        });
+        });
+        {% endif %}   
+    {% endif %}   
+       
+       
+       
 </script>
 </div>
 {% endif %}
@@ -363,33 +564,117 @@
 {% endif %}
 {% endcase %}
 {% endfor %}
-
 {% schema %}
-  {
-    "name": "Multiselect",
-    "settings": [],
-    "blocks": [
-    {
-     "type": "Multiselect",
-     "name": "Multiselect",
-     "settings" : [
-       {
-        "type": "paragraph",
-        "content": "Use multiselect with this product"
-      },
-      {
-       "id": "product",
-       "type": "product",
-       "label": "Product"
-      }
-      ]
-     }    
-    ]
-  }
+{
+"name": "Multiselect",
+"settings": [],
+"blocks": [
+{
+"type": "Multiselect",
+"name": "Multiselect",
+"settings" : [
+{
+"type": "paragraph",
+"content": "Use multiselect with this product"
+},
+{
+"id": "product",
+"type": "product",
+"label": "Product"
+},
+{
+"id": "quantity",
+"type": "checkbox",
+"label": "Allow Quantity"
+}
+]
+}    
+]
+}
 {% endschema %}
-
-{% stylesheet %}
+{% stylesheet 'scss' %}
+@mixin bp($point) {
+$bp-small: "(max-width: 350px)";
+$bp-mobile: "(max-width: 600px)";
+$bp-mobileup: "(min-width: 600px)";
+$bp-phablet: "(max-width: 1022px)";
+$bp-phabletup: "(min-width: 1022px)";
+$bp-tablet: "(max-width: 1280px)";
+$bp-tabletup: "(min-width: 1281px)";
+$bp-laptop: "(max-width: 1600px)";
+$bp-desktop: "(min-width: 1600px)";
+@if $point == desktop {
+@media #{$bp-desktop}  { @content; }
+}  
+@else if $point == laptop {
+@media #{$bp-laptop} { @content; }
+}
+@else if $point == tablet {
+@media #{$bp-tablet} { @content; }
+}
+@else if $point == tabletup {
+@media #{$bp-tabletup} { @content; }
+}
+@else if $point == phablet {
+@media #{$bp-phablet} { @content; }
+}
+@else if $point == phabletup {
+@media #{$bp-phabletup} { @content; }
+}
+@else if $point == mobile {
+@media #{$bp-mobile}  { @content; }
+}
+@else if $point == mobileup {
+@media #{$bp-mobileup} { @content; }
+}
+@else if $point == small {
+@media #{$bp-small}  { @content; }
+}
+}
+//color transition
+@mixin transition($attribute, $duration: null) {
+@if ($duration) {
+-webkit-transition: $attribute $duration ease;
+-moz-transition: $attribute $duration ease;
+transition: $attribute $duration ease;
+} @else {
+-webkit-transition: $attribute;
+-moz-transition: $attribute;
+transition: $attribute;
+}
+}
+@mixin keyframes($animationName) {
+@-webkit-keyframes #{$animationName} {
+@content;
+}
+@-moz-keyframes #{$animationName} {
+@content;
+}
+@-o-keyframes #{$animationName} {
+@content;
+}
+@keyframes #{$animationName} {
+@content;
+}
+}
+@mixin animate($name, $duration, $iteration, $direction) {
+-webkit-animation-duration: $duration;
+-moz-animation-duration: $duration;
+-o-animation-duration: $duration;
+animation-duration: $duration;
+-webkit-animation-iteration-count: $iteration;
+-moz-animation-iteration-count: $iteration;
+-o-animation-iteration-count: $iteration;
+animation-iteration-count: $iteration;
+-webkit-animation-name: $name;
+-moz-animation-name: $name;
+-o-animation-name: $name;
+animation-name: $name;
+-webkit-animation-direction: $direction;
+-moz-animation-direction: $direction;
+-o-animation-direction: $direction;
+animation-direction: $direction;
+}
 {% endstylesheet %}
-
 {% javascript %}
 {% endjavascript %}
