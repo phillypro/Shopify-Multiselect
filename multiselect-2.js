@@ -1117,7 +1117,7 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
-                                        return e.next = 2, fetch("/cart.js");
+                                        return e.next = 2, console.log('no'), fetch("/cart.js");
                                     case 2:
                                         return n = e.sent, e.next = 5, n.json();
                                     case 5:
@@ -1169,6 +1169,18 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
+                                        console.log(this);
+                                        if(this.checkoutForm.querySelector('.multiselect_wrap')) {
+                                            
+                                            return t = this.checkoutForm.querySelector('.multiselect_wrap input[type="checkbox"]').value, n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/graphql",
+                                                    "X-Shopify-Storefront-Access-Token": this.accessToken
+                                                },
+                                                body: d(n)
+                                            });                                            
+                                        }else{
                                         return t = this.getVariantId(), n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
                                             method: "POST",
                                             headers: {
@@ -1177,6 +1189,7 @@
                                             },
                                             body: d(n)
                                         });
+                                        }
                                     case 4:
                                         return r = e.sent, e.next = 7, r.json();
                                     case 7:
@@ -1189,7 +1202,8 @@
                         })), function() {
                             return n.apply(this, arguments)
                         })
-                    }, {
+                    },
+               {
                         key: "fetchBeginOptions",
                         value: (t = i()(a.a.mark(function e(t) {
                             var n, r, o, i = this;
@@ -1202,7 +1216,7 @@
                                         }
                                         return e.abrupt("return", {});
                                     case 2:
-                                        return n = {}, e.next = 5, this.fetchVariantDetails();
+                                            return n = {}, e.next = 5, this.fetchVariantDetails();
                                     case 5:
                                         if (r = e.sent, n.requiresShipping = r.data.node.requiresShipping, r.data.shop.paymentSettings.currencyCode !== this.currency) {
                                             e.next = 10;
