@@ -244,8 +244,8 @@
       {% assign value = variant.options[0] %}
       {% unless values contains value %}   
       <div id="{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
-      <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} <span>Choose as many as you like</span>{% endunless %}</div>
-      <div>
+      <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} {% endunless %}{% if option_index == lastoption %}<span>Choose as many as you like</span>{% endif %}</div>
+      <div class="option-wrap">
          {% assign optionloop = 0 %} 
          <!-- loop out all the options for this div PERIOD! -->
          {% assign values1 = '' %}
@@ -671,6 +671,7 @@
 }
 {% endschema %}
 {% stylesheet 'scss' %}
+
 @mixin bp($point) {
   
   $bp-small: "(max-width: 350px)";
@@ -830,20 +831,18 @@ width: 100%;
       }
     }
     & .swatch-element {
-      display: inline-block;
-      position:relative;
+    position: relative;
+    padding: 0px 3px;
+    margin: 0 0px 15px;
+    flex-basis: auto;
+    flex-grow: 1;
+    min-width: 25%;
       & label {
-      border: #EDEDED 2px solid;
-      padding: 20px 20px;
-      min-width: 120px;
-       margin: 0 6px 15px;
-      display: inline-block;  
+      border: #EDEDED 3px solid;
+      display: block;  
+      margin:0;  
+      padding: 15px 0;
       @include transition(border-color,0.3s);  
-        @include bp(phablet) {
-            padding: 12px 20px;
-    margin: 0 4px 13px;
-              min-width: 100px;
-        }
         &:hover {
         border-color:$multiselect-hover;
         }
@@ -910,7 +909,8 @@ width: 100%;
 opacity: 0;
     background: $multiselect-quantity-background;
     color:$multiselect-quantity-font;      
-    padding: 5px 10px;
+padding: 5px 11px;
+    font-size: 85%;
     display: inline-block;
     border-radius: 100%;
           @include bp(phablet) {
@@ -921,12 +921,16 @@ opacity: 0;
       }
     }
     & .Multiselect-clear {
-       display: inline-flex;
+      display: inline-flex;
       align-items: center;
       padding: 20px 20px;
+      padding: 16px 20px;
+      margin: 0 6px 15px;
       @include bp(phablet) {
       width: 100%;
      justify-content: center;
+    padding: 10px 20px;
+    margin: 0 4px 10px;
       }
     }
   }
@@ -937,9 +941,12 @@ opacity: 0;
     font-weight: 600;
     line-height: 1.2;
       }
+     @include bp(phablet) {
+       margin-bottom: 0px;
+     }
     }
   }
 }
-{% endstylesheet %}
-{% javascript %}  
-{% endjavascript %}
+{% endstylesheet %} 
+{% javascript %}         
+{% endjavascript %} 
