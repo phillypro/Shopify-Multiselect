@@ -843,6 +843,9 @@ width: 100%;
       margin:0;  
       padding: 15px 0;
       @include transition(border-color,0.3s);  
+      @include bp(phablet) {
+       padding: 10px 0;
+      }
         &:hover {
         border-color:$multiselect-hover;
         }
@@ -948,5 +951,5 @@ padding: 5px 11px;
   }
 }
 {% endstylesheet %} 
-{% javascript %}         
+{% javascript %}           
 {% endjavascript %} 
