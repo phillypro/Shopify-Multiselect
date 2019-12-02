@@ -14,6 +14,10 @@
       var shopifyAjaxAddURL = '/cart/update.js';       
       var shopifyCartURL = '/cart';
       
+      // this might need to be changed based on theme
+     // var price = document.querySelector('.price-item');
+      //price.innerHTML = 'from ' + price.innerHTML;
+      
       // in case back button
       window.addEventListener("pageshow", function() {
          form.reset();
@@ -99,8 +103,9 @@
    {% endif %}
    {% endif %}
    {% if option_index == 0 %}
-   <div class="swatch clearfix" data-option-index="{{ option_index }}">
-      <div class="header">{{ option }}</div>
+   <div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
+     <div class="option-wrap">
+       <div class="header">{{ option }} {% if option_index == lastoption %}<span>Choose as many as you like</span>{% endif %}</div>
       {% assign values = '' %}
       {% assign value = variant.options[option_index] %}
       {% for variant in product.variants %}
@@ -121,20 +126,20 @@
          {% assign stock = 999 %}
          {% endif %}   
          {% if option_index == lastoption %} 
-         {% if block.settings.quantity %}
+         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant.available %}disabled{% endunless %}>
+        {% if block.settings.quantity %}
          <div class="quantity">
             <span>0</span>
          </div>
+         <label for="swatch-{{ option_index }}-{{ value | handle }}"><span class="multiselect-title">{{ variant.title }}</span> <span class="multiselect_price">{{ variant.price | money }}</span></label>
          {% endif %}
-         <label for="swatch-{{ option_index }}-{{ value | handle }}">
-         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant.available %}disabled{% endunless %}>
-         {{ variant.title }} - {{ variant.price | money }}
-         </label>
+ 
+         
          {% else %}
-         <label for="swatch-{{ option_index }}-{{ value | handle }}">
          <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="radio" name="id-{{ option_index }}" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if forloop.first %} checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
-         {{ variant.option1 }}
-         </label>
+         <label for="swatch-{{ option_index }}-{{ value | handle }}"><span class="multiselect-title">{{ variant.option1 }}</span></label>
+
+         
          {% endif %}
       </div>
       {% if variant.available %}
@@ -161,7 +166,28 @@
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
          
               quantitycheckbox.addEventListener( 'click', function(e) { 
-                     var quantitywrap = this.parentElement.previousElementSibling;
+                                    var swatchelement = this.parentElement;
+                
+                                  // one time animation before active
+                if(!swatchelement.classList.contains('active')) {
+                 swatchelement.classList.add('popgrow'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.addEventListener(name, popgrow, false)); 
+                  function popgrow(e) {
+                    // remove class
+                    swatchelement.classList.remove('popgrow');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));  
+                  }
+                }
+                     if(this.checked == true) {
+                     swatchelement.classList.add('active');
+                     }else{
+                     {% if block.settings.quantity == false %}  
+                     swatchelement.classList.remove('active');
+                     {% endif %}  
+                     }
+                     var quantitywrap = this.nextElementSibling;
                      var quantityspan = quantitywrap.getElementsByTagName('span')[0];
                      var currentquantity = Number(quantityspan.innerHTML);
                      var inventory =  Number(this.getAttribute('inventory'));
@@ -171,19 +197,17 @@
                      this.setAttribute('quantity', quantityspan.innerHTML);
          
                   }
-                // handle animation of quantity
-                if(currentquantity > 1) {
-                 quantitywrap.classList.add('quantityup'); 
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
-                  function quantityup(e) {
+               if(currentquantity > 1) {
+                 quantitywrap.classList.add('pop'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, pop, false)); 
+                  function pop(e) {
                     // remove class
-                    quantitywrap.classList.remove('quantityup');
+                    quantitywrap.classList.remove('pop');
                    // make it one time
-                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));  
                   }
                 }
-                // End Handle
            
                
                 if(this.checked === false ) {
@@ -201,24 +225,26 @@
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
              quantitycheckbox.checked = false;
              quantitycheckbox.setAttribute('quantity', 1);
-             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.nextElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.parentElement.classList.remove('active');
           }); 
          });
          {% endif %}   
       </script>
       {% endif %}
    </div>
+  </div>
    {% endif %}
    {% if product.options.size > 1 %} 
    {% if option_index == 1 %}
-   <div class="swatch clearfix" data-option-index="{{ option_index }}">
+   <div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
       {% assign values = '' %}
       {% assign value = variant.options[option_index] %}
       {% for variant in product.variants %}
       {% assign value = variant.options[0] %}
       {% unless values contains value %}   
       <div id="{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
-      <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} {% endunless %}</div>
+      <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} <span>Choose as many as you like</span>{% endunless %}</div>
       <div>
          {% assign optionloop = 0 %} 
          <!-- loop out all the options for this div PERIOD! -->
@@ -238,20 +264,20 @@
          {% endif %}    
          <div id="{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="swatch-element value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
             {% if option_index == lastoption %} 
-            {% if block.settings.quantity %}
+            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
+           {% if block.settings.quantity %}
             <div class="quantity">
                <span>0</span>
             </div>
+         <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}"><span class="multiselect-title">{{ variant1.option2 }}</span> <span class="multiselect_price">{{ variant1.price | money }}</span></label>
+
             {% endif %}
-            <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
-            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
-            {{ variant1.option2 }} - {{ variant1.price | money }}
-            </label>
+            
             {% else %}
-            <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
             <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="radio" name="id-{{ option_index }}-{{ value | handle }}" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1" {% if optionloop == 0 %} checked{% endif %} >
-            {{ variant1.option2 }}
-            </label>
+            <label for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}"><span class="multiselect-title">{{ variant1.option2 }}</span></label>
+
+            
             {% endif %}
          </div>
          {% if variant1.available %}
@@ -305,6 +331,9 @@
                }
               });
          });
+     
+     
+         
       
          {% if block.settings.quantity %}
          quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="1"] input[type=checkbox]');
@@ -312,7 +341,28 @@
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
       
               quantitycheckbox.addEventListener( 'click', function(e) { 
-                     var quantitywrap = this.parentElement.previousElementSibling;
+                                  var swatchelement = this.parentElement;
+                
+                                  // one time animation before active
+                if(!swatchelement.classList.contains('active')) {
+                 swatchelement.classList.add('popgrow'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.addEventListener(name, popgrow, false)); 
+                  function popgrow(e) {
+                    // remove class
+                    swatchelement.classList.remove('popgrow');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));  
+                  }
+                }
+                     if(this.checked == true) {
+                     swatchelement.classList.add('active');
+                     }else{
+                     {% if block.settings.quantity == false %}  
+                     swatchelement.classList.remove('active');
+                     {% endif %}  
+                     }
+                     var quantitywrap = this.nextElementSibling;
                      var quantityspan = quantitywrap.getElementsByTagName('span')[0];
                      var currentquantity = Number(quantityspan.innerHTML);
                      var inventory =  Number(this.getAttribute('inventory'));
@@ -322,19 +372,17 @@
                      this.setAttribute('quantity', quantityspan.innerHTML);
       
                   }
-                // handle animation of quantity
                 if(currentquantity > 1) {
-                 quantitywrap.classList.add('quantityup'); 
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
-                  function quantityup(e) {
+                 quantitywrap.classList.add('pop'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, pop, false)); 
+                  function pop(e) {
                     // remove class
-                    quantitywrap.classList.remove('quantityup');
+                    quantitywrap.classList.remove('pop');
                    // make it one time
-                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));  
                   }
                 }
-                // End Handle
            
                
                 if(this.checked === false ) {
@@ -353,7 +401,8 @@
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
              quantitycheckbox.checked = false;
              quantitycheckbox.setAttribute('quantity', 1);
-             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.nextElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.parentElement.classList.remove('active');
           }); 
         });
         });
@@ -364,7 +413,7 @@
 </div>
 {% endif %}
 {% if option_index == 2 %}
-<div class="swatch clearfix" data-option-index="{{ option_index }}">
+<div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
    <!-- loop out the first option and wrap -->
    {% assign values2 = '' %}  
    {% for variant2 in product.variants %}
@@ -381,7 +430,7 @@
    <!-- this is the second option -->
    {% if variant3.option2 == value3 %} 
    <div id="{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option2 == value3 %}style="display:none;"{% endunless %}> 
-   <div class="header">{{ option }}  / {{ value2 | title }} / {{ value3 | title }}</div>
+   <div class="header">{{ option }}  / {{ value2 | title }} / {{ value3 | title }} <span>Choose as many as you like</span></div>
    <!-- loop out the first option and wrap -->
    {% assign values4 = '' %}  
    {% for variant4 in product.variants %}
@@ -398,15 +447,16 @@
    {% assign stock = 999 %}
    {% endif %}
    <div id="{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="swatch-element value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
-      {% if block.settings.quantity %}
+
+      <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
+     {% if block.settings.quantity %}
       <div class="quantity">
          <span>0</span>
       </div>
       {% endif %} 
-      <label for="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}">
-      <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
-      {{ variant4.option3 }} - {{ variant4.price | money }}
-      </label>
+           <label for="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}"><span class="multiselect-title">{{ variant4.option3 }}</span> <span class="multiselect_price">{{ variant4.price | money }}</span></label>
+
+      
    </div>
    {% if variant4.available %}
    <script>
@@ -447,7 +497,7 @@
             var brothers_n_sisters = siblings(el);
              // if last option lets clear all checkboxes
             {% if option_index == lastoption %}  
-            brothers_n_sisters.forEach(element => [element.style.display = "none",element.querySelectorAll('input').forEach(element2 => element2.checked = false)]); 
+            brothers_n_sisters.forEach(element => [element.style.display = "none",element.querySelectorAll('input').forEach(element2 => [element2.checked = false, element2.parentElement.classList.remove('active')] )]); 
             {% else %} 
             brothers_n_sisters.forEach(element => [element.style.display = "none"]);
             {% endif %} 
@@ -471,7 +521,7 @@
      if(this.checked) {
        var checkbox1 = this;
        // 2nd level deep
-   
+      
       var eltop = document.querySelector('#{{ product.handle }}-{{ product.id }}-{{ option_index }}-' + checkbox1.getAttribute('data-value')); 
       eltop.style.display = "block";
       var brothers_n_sisters = siblings(eltop);
@@ -487,6 +537,7 @@
               var elmiddle = document.querySelector('#{{ product.handle }}-{{ product.id }}-2-' + checkbox2.getAttribute('data-value') ); 
               // Checkbox is checked..
               elmiddle.style.display = "block";
+                                                  
            };
                                                     
                                                     
@@ -497,13 +548,41 @@
     });
        
        
-    {% if block.settings.quantity %}
+   
          quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="2"] input[type=checkbox]');
          if (quantitycheckboxes) {
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
    
               quantitycheckbox.addEventListener( 'click', function(e) { 
-                     var quantitywrap = this.parentElement.previousElementSibling;
+                     var swatchelement = this.parentElement;
+                
+                                  // one time animation before active
+                if(!swatchelement.classList.contains('active')) {
+                 swatchelement.classList.add('popgrow'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.addEventListener(name, popgrow, false)); 
+                  function popgrow(e) {
+                    // remove class
+                    swatchelement.classList.remove('popgrow');
+                   // make it one time
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => swatchelement.removeEventListener(name, popgrow, false));  
+                  }
+                }
+                // End Handle
+                
+                
+                     if(this.checked == true) {
+                     swatchelement.classList.add('active');
+                     }else{
+                     {% if block.settings.quantity == false %}  
+                     swatchelement.classList.remove('active');
+                     {% endif %}  
+                     }
+                   
+                
+                
+                     {% if block.settings.quantity %}
+                     var quantitywrap = this.nextElementSibling;
                      var quantityspan = quantitywrap.getElementsByTagName('span')[0];
                      var currentquantity = Number(quantityspan.innerHTML);
                      var inventory =  Number(this.getAttribute('inventory'));
@@ -511,44 +590,43 @@
                   if(currentquantity < inventory) {
                      quantityspan.innerHTML = ++currentquantity;
                      this.setAttribute('quantity', quantityspan.innerHTML);
-   
                   }
-                // handle animation of quantity
                 if(currentquantity > 1) {
-                 quantitywrap.classList.add('quantityup'); 
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));                    
-                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, quantityup, false)); 
-                  function quantityup(e) {
+                 quantitywrap.classList.add('pop'); 
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));                    
+                 "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.addEventListener(name, pop, false)); 
+                  function pop(e) {
                     // remove class
-                    quantitywrap.classList.remove('quantityup');
+                    quantitywrap.classList.remove('pop');
                    // make it one time
-                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, quantityup, false));  
+                   "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend".split(" ").map(name => quantitywrap.removeEventListener(name, pop, false));  
                   }
                 }
-                // End Handle
+ 
            
                
                 if(this.checked === false ) {
                  this.checked = true; 
                  e.preventDefault(); 
                 }
-               
+                {% endif %}
               });
          });  
          }
         // add clear function
-        {% if option_index == lastoption %} 
+        {% if block.settings.quantity and option_index == lastoption %} 
         var clears = form.querySelectorAll('.swatch[data-option-index="2"] .Multiselect-clear');
         clears.forEach(function(clear) {  
         clear.addEventListener( 'click', function(e) {
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
              quantitycheckbox.checked = false;
              quantitycheckbox.setAttribute('quantity', 1);
-             quantitycheckbox.parentElement.previousElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.nextElementSibling.getElementsByTagName('span')[0].innerHTML = 0;
+             quantitycheckbox.parentElement.classList.remove('active');
           }); 
         });
         });
-        {% endif %}   
+          
     {% endif %}   
        
        
@@ -594,87 +672,274 @@
 {% endschema %}
 {% stylesheet 'scss' %}
 @mixin bp($point) {
-$bp-small: "(max-width: 350px)";
-$bp-mobile: "(max-width: 600px)";
-$bp-mobileup: "(min-width: 600px)";
-$bp-phablet: "(max-width: 1022px)";
-$bp-phabletup: "(min-width: 1022px)";
-$bp-tablet: "(max-width: 1280px)";
-$bp-tabletup: "(min-width: 1281px)";
-$bp-laptop: "(max-width: 1600px)";
-$bp-desktop: "(min-width: 1600px)";
-@if $point == desktop {
-@media #{$bp-desktop}  { @content; }
-}  
-@else if $point == laptop {
-@media #{$bp-laptop} { @content; }
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1281px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
 }
-@else if $point == tablet {
-@media #{$bp-tablet} { @content; }
-}
-@else if $point == tabletup {
-@media #{$bp-tabletup} { @content; }
-}
-@else if $point == phablet {
-@media #{$bp-phablet} { @content; }
-}
-@else if $point == phabletup {
-@media #{$bp-phabletup} { @content; }
-}
-@else if $point == mobile {
-@media #{$bp-mobile}  { @content; }
-}
-@else if $point == mobileup {
-@media #{$bp-mobileup} { @content; }
-}
-@else if $point == small {
-@media #{$bp-small}  { @content; }
-}
-}
+
+
 //color transition
 @mixin transition($attribute, $duration: null) {
-@if ($duration) {
--webkit-transition: $attribute $duration ease;
--moz-transition: $attribute $duration ease;
-transition: $attribute $duration ease;
-} @else {
--webkit-transition: $attribute;
--moz-transition: $attribute;
-transition: $attribute;
+  
+      @if ($duration) {
+       
+    -webkit-transition: $attribute $duration ease;
+    -moz-transition: $attribute $duration ease;
+    transition: $attribute $duration ease;
+    } @else {
+        
+    -webkit-transition: $attribute;
+    -moz-transition: $attribute;
+    transition: $attribute;
+    }
+
 }
-}
+
 @mixin keyframes($animationName) {
-@-webkit-keyframes #{$animationName} {
-@content;
-}
-@-moz-keyframes #{$animationName} {
-@content;
-}
-@-o-keyframes #{$animationName} {
-@content;
-}
-@keyframes #{$animationName} {
-@content;
-}
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
 }
 @mixin animate($name, $duration, $iteration, $direction) {
--webkit-animation-duration: $duration;
--moz-animation-duration: $duration;
--o-animation-duration: $duration;
-animation-duration: $duration;
--webkit-animation-iteration-count: $iteration;
--moz-animation-iteration-count: $iteration;
--o-animation-iteration-count: $iteration;
-animation-iteration-count: $iteration;
--webkit-animation-name: $name;
--moz-animation-name: $name;
--o-animation-name: $name;
-animation-name: $name;
--webkit-animation-direction: $direction;
--moz-animation-direction: $direction;
--o-animation-direction: $direction;
-animation-direction: $direction;
+  -webkit-animation-duration: $duration;
+     -moz-animation-duration: $duration;
+       -o-animation-duration: $duration;
+          animation-duration: $duration;
+  -webkit-animation-iteration-count: $iteration;
+     -moz-animation-iteration-count: $iteration;
+       -o-animation-iteration-count: $iteration;
+          animation-iteration-count: $iteration;
+  -webkit-animation-name: $name;
+     -moz-animation-name: $name;
+       -o-animation-name: $name;
+          animation-name: $name;
+  -webkit-animation-direction: $direction;
+     -moz-animation-direction: $direction;
+       -o-animation-direction: $direction;
+          animation-direction: $direction;
+}
+
+@keyframes multiselect-popspin{
+        0% {
+          opacity:0;
+          transform: translateY(100%) rotateY(360deg);
+        
+        }
+        100% {
+        transform: translateY(0) rotateY(0deg);
+          opacity:1;
+       
+        }
+}
+
+@keyframes multiselect-pop{
+        0% {
+          transform: rotateZ(0deg) scale(1);
+        }
+        30% {
+        transform: rotateZ(60deg) scale(1.5);
+        }
+        60% {
+        transform: rotateZ(-60deg) scale(1.5);
+        }
+        100% {
+        transform: rotateZ(0deg) scale(1);
+        }
+}
+
+ @keyframes multiselect-popgrow{
+        0% {
+          transform: scale(1);
+        }
+        50% {
+        transform: scale(1.15);
+        }
+        100% {
+        transform: scale(1);
+        }
+}
+$multiselect-selected: pink;
+$multiselect-hover: rgba(167, 192, 251, 0.28);
+$multiselect-quantity-background: #f1a3b0;
+$multiselect-quantity-font: #fff;
+
+#shopify-section-Multiselect {
+width: 100%;
+  & .swatch {
+ margin-bottom: 20px;   
+  & .option-wrap {
+   display:flex;
+   flex-wrap: wrap;
+   width: 100%; 
+    & .header {
+    width: 100%;
+    flex: 1 1 100%;
+    font-size: 1.25em;
+    /* text-transform: uppercase; */
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 12px;  
+      & span {
+    font-size: 70%;
+    font-weight: normal;
+    letter-spacing: normal;
+      }
+    }
+    & .swatch-element {
+      display: inline-block;
+      position:relative;
+      & label {
+      border: #EDEDED 2px solid;
+      padding: 20px 20px;
+      min-width: 120px;
+       margin: 0 6px 15px;
+      display: inline-block;  
+      @include transition(border-color,0.3s);  
+        @include bp(phablet) {
+            padding: 12px 20px;
+    margin: 0 4px 13px;
+              min-width: 100px;
+        }
+        &:hover {
+        border-color:$multiselect-hover;
+        }
+        & span {
+         text-align: center; 
+         display:block;
+        }
+      }
+      &.popgrow {
+                -webkit-animation: multiselect-popgrow 300ms ease-out;    
+               animation: multiselect-popgrow 300ms ease-out;    
+      } 
+      &.active {
+
+           & label {
+           border-color:$multiselect-selected;
+           @include transition(border-color,0.3s);
+           }
+         & .quantity {
+            &.pop {
+              -webkit-animation: multiselect-pop 500ms ease-out;    
+               animation: multiselect-pop 500ms ease-out;  
+            }
+            & span {
+    animation: multiselect-popspin 300ms ease-out;
+    animation-delay: 300ms;
+    animation-fill-mode: forwards;  
+    -webkit-animation: multiselect-popspin 300ms ease-out;
+    -webkit-animation-delay: 300ms;
+    -webkit-animation-fill-mode: forwards;  
+            }
+         } 
+      }
+      & input {
+      &[type='radio'] {
+         display:none;
+        & ~ label {
+             @include transition(border-color,0.3s);  
+          &:hover {
+          border-color: $multiselect-hover;
+          }
+        }
+        &:checked {
+         & ~ label {
+            border-color:$multiselect-selected;
+            @include transition(border-color,0.3s);
+          } 
+        }
+       }
+       &[type='checkbox'] {
+        display:none;
+       }
+      }
+      & .quantity {
+       position:absolute;
+       pointer-events: none;
+       top: -10px;
+       left: 0px;
+       width: 100%;
+       line-height: normal;
+       text-align: center; 
+       z-index: 9;
+        & span {
+opacity: 0;
+    background: $multiselect-quantity-background;
+    color:$multiselect-quantity-font;      
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 100%;
+          @include bp(phablet) {
+              padding: 3px 8px;
+    font-size: 80%;
+          }
+        }
+      }
+    }
+    & .Multiselect-clear {
+       display: inline-flex;
+      align-items: center;
+      padding: 20px 20px;
+      @include bp(phablet) {
+      width: 100%;
+     justify-content: center;
+      }
+    }
+  }
+    &.last_swatch {
+      & .multiselect-title {
+    font-size: 1.25em;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    line-height: 1.2;
+      }
+    }
+  }
 }
 {% endstylesheet %}
-{% javascript %}
+{% javascript %}  
 {% endjavascript %}
