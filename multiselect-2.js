@@ -1169,9 +1169,7 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
-                                        console.log(this);
                                         if(this.checkoutForm.querySelector('.multiselect_wrap')) {
-                                            
                                             return t = this.checkoutForm.querySelector('.multiselect_wrap input[type="checkbox"]').value, n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
                                                 method: "POST",
                                                 headers: {
