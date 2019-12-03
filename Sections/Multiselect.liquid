@@ -262,7 +262,7 @@
       {% for variant in product.variants %}
       {% assign value = variant.options[0] %}
       {% unless values contains value %}   
-      <div id="{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
+      <div id="option-{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
       <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} {% endunless %}{% if option_index == lastoption %}<span>Choose as many as you like</span>{% endif %}</div>
       <div class="option-wrap">
          {% assign optionloop = 0 %} 
@@ -281,7 +281,7 @@
          {% else %}
          {% assign stock = 999 %}
          {% endif %}    
-         <div id="{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if optionloop == 0 %}{% unless option_index == lastoption %}active{% endunless %}{% endif %}">
+         <div id="element-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if optionloop == 0 %}{% unless option_index == lastoption %}active{% endunless %}{% endif %}">
             {% if option_index == lastoption %} 
             <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
            {% if block.settings.quantity %}
@@ -321,7 +321,7 @@
          </div>
          {% if variant1.available %}
          <script>
-            var el = document.querySelector('#{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}');
+            var el = document.querySelector('#element-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}');
             var input = el.querySelector('input');                                   
             //remove soldout add available 
             el.classList.remove("soldout");
@@ -356,7 +356,7 @@
       
              checkbox.addEventListener( 'click', function() { 
               if(this.checked) {
-               var el = document.querySelector('#{{ product.handle }}-{{ product.id }}-' + this.getAttribute('data-value')); 
+               var el = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-' + this.getAttribute('data-value')); 
               // Checkbox is checked..
                el.style.display = "flex";
                                        
@@ -467,7 +467,7 @@
    {% unless values2 contains value2 %}
    <!-- this is the first option -->
    {% if variant2.option1 == value2 %} 
-   <div id="{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value2 %}style="display:none;"{% endunless %}> 
+   <div id="option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value2 %}style="display:none;"{% endunless %}> 
    <!-- loop out the second option and wrap -->
    {% assign values3 = '' %}  
    {% for variant3 in product.variants %}
@@ -475,7 +475,7 @@
    {% unless values3 contains value3 %}     
    <!-- this is the second option -->
    {% if variant3.option2 == value3 %} 
-   <div id="{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option2 == value3 %}style="display:none;"{% endunless %}> 
+   <div id="option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option2 == value3 %}style="display:none;"{% endunless %}> 
    <div class="header">{{ option }}  / {{ value2 | title }} / {{ value3 | title }} <span>Choose as many as you like</span></div>
    <!-- loop out the first option and wrap -->
    {% assign values4 = '' %}  
@@ -492,7 +492,7 @@
    {% else %}
    {% assign stock = 999 %}
    {% endif %}
-   <div id="{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
+   <div id="element-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
 
       <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
      {% if block.settings.quantity %}
@@ -516,7 +516,7 @@
    </div>
    {% if variant4.available %}
    <script>
-      var el = document.querySelector('#{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}');
+      var el = document.querySelector('#element-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}');
        var input = el.querySelector('input');                                   
          //remove soldout add available 
        el.classList.remove("soldout");
@@ -546,7 +546,7 @@
      var checkbox = document.querySelector("#swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}");
           checkbox.addEventListener( 'click', function() { 
            if(this.checked) {
-            var el = document.querySelector('#{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}'); 
+            var el = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}'); 
            // Checkbox is checked..    
    
             el.style.display = "flex";
@@ -579,7 +579,7 @@
        var checkbox1 = this;
        // 2nd level deep
       
-      var eltop = document.querySelector('#{{ product.handle }}-{{ product.id }}-{{ option_index }}-' + checkbox1.getAttribute('data-value')); 
+      var eltop = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-' + checkbox1.getAttribute('data-value')); 
       eltop.style.display = "flex";
       var brothers_n_sisters = siblings(eltop);
     {% if block.settings.quantity %}
@@ -590,11 +590,11 @@
        
       
         // 3rd level deep
-        var wrap = document.querySelector('#{{ product.handle }}-{{ product.id }}-' + checkbox1.getAttribute('data-value'));                                
+        var wrap = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-' + checkbox1.getAttribute('data-value'));                                
         var checkbox2 = wrap.querySelector(":checked");
                                  
           if(checkbox2.checked) {     
-              var elmiddle = document.querySelector('#{{ product.handle }}-{{ product.id }}-2-' + checkbox2.getAttribute('data-value') ); 
+              var elmiddle = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-2-' + checkbox2.getAttribute('data-value') ); 
               // Checkbox is checked..
               elmiddle.style.display = "flex";
                                                   
