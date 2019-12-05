@@ -1,11 +1,73 @@
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect@v1.0/multiselect-11.min.js' | script_tag }}
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect@v1.0/multiselect-2.min.js' | script_tag }}
+{% if section.settings.animate %}
+<script>
+var callbackMultiselect = function(){
+  // Handler when the DOM is fully loaded
+  if(!window.ScrollReveal) {
+    // add script
+    var script = document.createElement("script");
+    script.type = "text/javascript";   
+    script.src = 'https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js';
+    document.getElementsByTagName("head")[0].appendChild(script);
+  }
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callbackMultiselect();
+} else {
+  document.addEventListener("DOMContentLoaded", callbackMultiselect);
+}
+{% endif %}  
+  
+  
+function deferMultiselect(methodMultiselect) {
+    if (window.ScrollReveal) {
+        methodMultiselect();
+    } else {
+        setTimeout(function() { deferMultiselect(methodMultiselect) }, 50);
+    }
+}
+deferMultiselect(function () {  
+  {% if section.settings.animate %}
+     
+ 
+  sr();
+
+  
+  
+  function sr() {
+
+      
+      
+      //if not we go body
+      ScrollReveal().reveal( document.querySelectorAll('#Multiselect_{{ product.id }}.animate .first .multi-swatch-element'), {
+rotate: { x: 0, y: 0, z: 0 },   
+scale: 1, 
+interval: 60, 
+duration: 500,  
+distance: '40px',
+easing: 'ease-out',  
+opacity: 0,
+viewFactor: 0.8, 
+afterReveal: function(el) {
+  ScrollReveal().clean(el);
+}}); 
+    }
+  
+  
+  {% endif %}
+});
+</script>
 {% for block in section.blocks %}
 {% case block.type %}
 {% when 'Multiselect' %}
 {% if product.handle == block.settings.product %}
 {% if product.variants.size >= 1 %}
-<div id="Multiselect_{{ product.id }}" class="multiselect_wrap">
+<div id="Multiselect_{{ product.id }}" class="multiselect_wrap {% if section.settings.animate %} animate {% endif %}">
    {% for option in product.options %}
    {% if forloop.index0 == 0 %}
    <script>
@@ -74,10 +136,13 @@
       
       
        var siblings = n => [...n.parentElement.children].filter(c=> c!=n && c.classList.contains('option-wrap'))
-       var siblings2 = n => [...n.parentElement.children].filter(c=> c!=n && c.classList.contains('swatch-element'))
+       var siblings2 = n => [...n.parentElement.children].filter(c=> c!=n && c.classList.contains('multi-swatch-element'))
        
       
    </script>
+     <style>
+       #product-variants-{{ product.id }} { display: none !important; }
+   </style>
    {% endif %}
    {% assign found_option = false %}
    {% assign is_color = false %}
@@ -92,9 +157,16 @@
       #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
    </style>
    <script>
-      document.querySelectorAll('.selector-wrapper')[{{ option_index }}].style.display = "none"; 
+    
+    var selectoroption =  document.querySelectorAll('.selector-wrapper')[{{ option_index }}];
+     if(selectoroption) {
+      selectoroption.style.display = "none"; 
+     }
       window.onload = function(e){ 
-      document.querySelectorAll('.selector-wrapper')[{{ option_index }}].style.display = "none"; 
+       var selectoroption = document.querySelectorAll('.selector-wrapper')[{{ option_index }}]; 
+     if(selectoroption) {
+      selectoroption.style.display = "none"; 
+     }  
       }
    </script>
    {% assign downcased_option = option | downcase %}
@@ -103,7 +175,7 @@
    {% endif %}
    {% endif %}
    {% if option_index == 0 %}
-   <div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
+   <div class="multi-swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
      <div class="option-wrap">
        <div class="header">{{ option }} {% if option_index == lastoption %}<span>Choose as many as you like</span>{% endif %}</div>
       {% assign values = '' %}
@@ -114,7 +186,7 @@
       {% assign values = values | join: ',' %}
       {% assign values = values | append: ',' | append: value %} 
       {% assign values = values | split: ',' %} 
-      <div id="{{ product.handle }}-{{ value | remove: ' ' }}" data-value="{{ value | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }} {% if variant.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if forloop.first %}{% unless option_index == lastoption %}active{% endunless %}{% endif %} ">
+      <div id="{{ product.handle }}-{{ value | remove: ' ' }}" data-value="{{ value | handle }}" class="multi-swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }} {% if variant.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if forloop.first %}{% unless option_index == lastoption %}active{% endunless %}{% endif %} ">
          <!-- if product options only 1 lets give em all the options...if more lets make another wrapper -->
          {% if variant.inventory_management != blank %}
          {% if variant.inventory_policy == 'continue' %}
@@ -126,18 +198,18 @@
          {% assign stock = 999 %}
          {% endif %}   
          {% if option_index == lastoption %} 
-         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant.available %}disabled{% endunless %}>
+         <input id="multi-swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="checkbox" name="id" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant.available %}disabled{% endunless %}>
         {% if block.settings.quantity %}
          <div class="quantity">
             <span>0</span>
          </div>
-         <label for="swatch-{{ option_index }}-{{ value | handle }}"><span class="multiselect-title">{{ variant.title }}</span> <span class="multiselect_price">{{ variant.price | money }}</span></label>
+         <label for="multi-swatch-{{ option_index }}-{{ value | handle }}"><span class="multiselect-title">{{ variant.title }}</span> <span class="multiselect_price">{{ variant.price | money }}</span></label>
          {% endif %}
  
          
          {% else %}
-         <input id="swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="radio" name="id-{{ option_index }}" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if forloop.first %} checked{% endif %} {% unless variant.available %}{% if option_index == lastoption %}disabled{% endif %}{% endunless %}>
-         <label class="{% if is_color  %}color{% endif %}" for="swatch-{{ option_index }}-{{ value | handle }}">
+         <input id="multi-swatch-{{ option_index }}-{{ value | handle }}" data-value="{{ value | handle }}" type="radio" name="id-{{ option_index }}" value="{{ variant.id }}" inventory="{{ stock }}" quantity="1" {% if forloop.first %} checked{% endif %} {% unless variant.available %}{% if option_index == lastoption %}disabled{% endif %}{% endunless %}>
+         <label class="{% if is_color  %}color{% endif %}" for="multi-swatch-{{ option_index }}-{{ value | handle }}">
            {% if is_color  %} 
            <span class="image">
              <span>
@@ -154,7 +226,7 @@
        
       {% if variant.available %}
       <script>
-         var el = form.querySelector('.swatch[data-option-index="{{ option_index }}"] .value-{{ value | handle }}');
+         var el = form.querySelector('.multi-swatch[data-option-index="{{ option_index }}"] .value-{{ value | handle }}');
          var input = el.querySelector('input');                                   
          //remove soldout add available 
          el.classList.remove("soldout");
@@ -171,7 +243,7 @@
       {% endif %} 
       {% if block.settings.quantity %}
       <script> 
-         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="0"] input');
+         quantitycheckboxes  = form.querySelectorAll('.multi-swatch[data-option-index="0"] input');
          if (quantitycheckboxes) {
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
          
@@ -239,7 +311,7 @@
          }
          // add clear function
          {% if option_index == lastoption %} 
-         var clear = form.querySelector('.swatch[data-option-index="0"] .Multiselect-clear');
+         var clear = form.querySelector('.multi-swatch[data-option-index="0"] .Multiselect-clear');
          clear.addEventListener( 'click', function(e) {
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
              quantitycheckbox.checked = false;
@@ -256,13 +328,13 @@
    {% endif %}
    {% if product.options.size > 1 %} 
    {% if option_index == 1 %}
-   <div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
+   <div class="multi-swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
       {% assign values = '' %}
       {% assign value = variant.options[option_index] %}
       {% for variant in product.variants %}
       {% assign value = variant.options[0] %}
       {% unless values contains value %}   
-      <div id="option-{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
+      <div id="option-{{ product.handle }}-{{ product.id }}-{{ value | handle }}" class="option-wrap {% if product.selected_or_first_available_variant.option1 == value and option_index == lastoption %}first {% endif %}"  {% unless product.selected_or_first_available_variant.option1 == value %}style="display:none;"{% endunless %}> 
       <div class="header">{{ option }} {% unless option_index == lastoption %} / {{ value | title }} {% endunless %}{% if option_index == lastoption %}<span>Choose as many as you like</span>{% endif %}</div>
       <div class="option-wrap">
          {% assign optionloop = 0 %} 
@@ -281,15 +353,15 @@
          {% else %}
          {% assign stock = 999 %}
          {% endif %}    
-         <div id="element-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if optionloop == 0 %}{% unless option_index == lastoption %}active{% endunless %}{% endif %}">
+         <div id="element-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" class="multi-swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}{% if option_index == lastoption %}soldout{% endif %}{% endif %} {% if optionloop == 0 %}{% unless option_index == lastoption %}active{% endunless %}{% endif %}">
             {% if option_index == lastoption %} 
-            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
+            <input id="multi-swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="checkbox" name="id" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant1.available %}disabled{% endunless %}>
            {% if block.settings.quantity %}
             <div class="quantity">
                <span>0</span>
             </div>
            {% endif %}
-         <label class="{% if is_color  %}color{% endif %}"  for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
+         <label class="{% if is_color  %}color{% endif %}"  for="multi-swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
            {% if is_color  %} 
            <span class="image">
              <span>
@@ -304,8 +376,8 @@
             
             
             {% else %}
-            <input id="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="radio" name="id-{{ option_index }}-{{ value | handle }}" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1" {% if optionloop == 0 %} checked{% endif %} >
-            <label class="{% if is_color  %}color{% endif %}" for="swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
+            <input id="multi-swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}" data-value="{{ value | handle }}-{{ value1 | handle }}" type="radio" name="id-{{ option_index }}-{{ value | handle }}" value="{{ variant1.id }}" inventory="{{ stock }}" quantity="1" {% if optionloop == 0 %} checked{% endif %} >
+            <label class="{% if is_color  %}color{% endif %}" for="multi-swatch-{{ product.handle }}-{{ value | handle }}-{{ value1 | handle }}">
            {% if is_color  %} 
            <span class="image">
              <span>
@@ -350,7 +422,7 @@
    <script>
       // make visibility it reliant on first option
            
-             var checkboxes = form.querySelectorAll('.swatch[data-option-index="0"] input');
+             var checkboxes = form.querySelectorAll('.multi-swatch[data-option-index="0"] input');
              
          checkboxes.forEach(function(checkbox) {  
       
@@ -363,7 +435,7 @@
                var brothers_n_sisters = siblings(el);
                 // if last option lets clear all checkboxes
                {% if option_index == lastoption %}  
-               brothers_n_sisters.forEach(element => [element.style.display = "none",element.querySelectorAll('.swatch-element').forEach(element2 => [element2.classList.remove('active'),element2.querySelector('input[type="checkbox"]').checked = false])]); 
+               brothers_n_sisters.forEach(element => [element.style.display = "none",element.querySelectorAll('.multi-swatch-element').forEach(element2 => [element2.classList.remove('active'),element2.querySelector('input[type="checkbox"]').checked = false])]); 
                {% else %} 
                brothers_n_sisters.forEach(element => element.style.display = "none");
                {% endif %} 
@@ -375,7 +447,7 @@
          
       
          
-         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="1"] input');
+         quantitycheckboxes  = form.querySelectorAll('.multi-swatch[data-option-index="1"] input');
          if (quantitycheckboxes) {
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
       
@@ -441,7 +513,7 @@
          }
          // add clear function
         {% if option_index == lastoption %} 
-        var clears = form.querySelectorAll('.swatch[data-option-index="1"] .Multiselect-clear');
+        var clears = form.querySelectorAll('.multi-swatch[data-option-index="1"] .Multiselect-clear');
         clears.forEach(function(clear) {  
         clear.addEventListener( 'click', function(e) {
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
@@ -459,7 +531,7 @@
 </div>
 {% endif %}
 {% if option_index == 2 %}
-<div class="swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
+<div class="multi-swatch clearfix {% if option_index == lastoption %}last_swatch{% endif %}" data-option-index="{{ option_index }}">
    <!-- loop out the first option and wrap -->
    {% assign values2 = '' %}  
    {% for variant2 in product.variants %}
@@ -475,7 +547,7 @@
    {% unless values3 contains value3 %}     
    <!-- this is the second option -->
    {% if variant3.option2 == value3 %} 
-   <div id="option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}" class="option-wrap"  {% unless product.selected_or_first_available_variant.option2 == value3 %}style="display:none;"{% endunless %}> 
+   <div id="option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}" class="option-wrap {% if product.selected_or_first_available_variant.option2 == value3 and option_index == lastoption %}first{% endif %}"  {% unless product.selected_or_first_available_variant.option2 == value3 %}style="display:none;"{% endunless %}> 
    <div class="header">{{ option }}  / {{ value2 | title }} / {{ value3 | title }} <span>Choose as many as you like</span></div>
    <!-- loop out the first option and wrap -->
    {% assign values4 = '' %}  
@@ -492,15 +564,15 @@
    {% else %}
    {% assign stock = 999 %}
    {% endif %}
-   <div id="element-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
+   <div id="element-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" class="multi-swatch-element {% if is_color %}color {% if block.settings.color-image %}image{% endif %} {% endif %} value-{{ value | handle }}-{{ value1 | handle }} {% if variant1.available %}available{% else %}soldout{% endif %}">
 
-      <input id="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
+      <input id="multi-swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" data-value="{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}" type="checkbox" name="id" value="{{ variant4.id }}" inventory="{{ stock }}" quantity="1"  {% unless variant4.available %}disabled{% endunless %}>
      {% if block.settings.quantity %}
       <div class="quantity">
          <span>0</span>
       </div>
       {% endif %} 
-           <label class="{% if is_color  %}color{% endif %}" for="swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}">
+           <label class="{% if is_color  %}color{% endif %}" for="multi-swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}-{{ value4 | handle }}">
           {% if is_color  %} 
            <span class="image">
              <span>
@@ -543,7 +615,7 @@
 {% endif %}
 <script>
    // make visibility it reliant on first option
-     var checkbox = document.querySelector("#swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}");
+     var checkbox = document.querySelector("#multi-swatch-{{ product.handle }}-{{ value2 | handle }}-{{ value3 | handle }}");
           checkbox.addEventListener( 'click', function() { 
            if(this.checked) {
             var el = document.querySelector('#option-{{ product.handle }}-{{ product.id }}-{{ option_index }}-{{ value2 | handle }}-{{ value3 | handle }}'); 
@@ -572,7 +644,7 @@
 {% endunless %}
 {% endfor %}
 <script>
-   var checkboxes = form.querySelectorAll('.swatch[data-option-index="0"] input');
+   var checkboxes = form.querySelectorAll('.multi-swatch[data-option-index="0"] input');
    checkboxes.forEach(function(checkbox) { 
     checkbox.addEventListener( 'click', function() { 
      if(this.checked) {
@@ -609,7 +681,7 @@
        
        
    
-         quantitycheckboxes  = form.querySelectorAll('.swatch[data-option-index="2"] input');
+         quantitycheckboxes  = form.querySelectorAll('.multi-swatch[data-option-index="2"] input');
          if (quantitycheckboxes) {
          quantitycheckboxes.forEach(function(quantitycheckbox) { 
               
@@ -678,7 +750,7 @@
          }
         // add clear function
         {% if block.settings.quantity and option_index == lastoption %} 
-        var clears = form.querySelectorAll('.swatch[data-option-index="2"] .Multiselect-clear');
+        var clears = form.querySelectorAll('.multi-swatch[data-option-index="2"] .Multiselect-clear');
         clears.forEach(function(clear) {  
         clear.addEventListener( 'click', function(e) {
           quantitycheckboxes.forEach(function(quantitycheckbox) { 
@@ -708,7 +780,13 @@
 {% schema %}
 {
 "name": "Multiselect",
-"settings": [],
+"settings": [{
+"id": "animate",
+"type": "checkbox",
+"label": "Animate Intro",
+"default":true,
+"info": "fade in effect for the options"
+}],
 "blocks": [
 {
 "type": "Multiselect",
@@ -880,7 +958,10 @@ $multiselect-quantity-font: #fff;
 
 #shopify-section-Multiselect {
 width: 100%;
-  & .swatch {
+  & .animate .first .multi-swatch-element {
+   visibility:hidden;
+  }
+  & .multi-swatch {
  margin-bottom: 20px;   
   & .option-wrap {
    display:flex;
@@ -901,7 +982,7 @@ width: 100%;
     letter-spacing: normal;
       }
     }
-    & .swatch-element {
+    & .multi-swatch-element {
     position: relative;
     padding: 0px 3px;
     margin: 0 0px 15px;
