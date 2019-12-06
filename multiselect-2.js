@@ -41,7 +41,7 @@
         332: function(e, t, n) {
             "use strict";
             n(159);
-            var r = n(5),
+            var r = n(4),
                 a = n.n(r),
                 o = n(7),
                 i = n.n(o),
@@ -86,7 +86,7 @@
                 v = n.n(g),
                 b = n(149),
                 k = n(13),
-                _ = n(378),
+                _ = n(379),
                 x = (n(181), n(226), n(148), n(185), n(179), [
                     [/address1_blank$/, "Enter your shipping address"],
                     [/address2_blank$/, "Enter the apt, suite, etc. for your shipping address"],
@@ -116,7 +116,7 @@
                     [/zip(_code)?_blank$/, "Enter a ZIP code / postal code for your shipping address"],
                     [/zip(_code)?_invalid_for_country_and_province$/, "Enter a valid ZIP code / postal code for your shipping address"],
                     [/zip(_code)?_invalid_for_country$/, "Enter a valid ZIP code / postal code for your shipping address"],
-                    [/(invalid|blank)$/, L],
+                    [/(invalid|blank)$/, E],
                     [/not_enough_in_stock$/, P]
                 ]);
 
@@ -148,19 +148,19 @@
                 return t && t.remaining ? "Not enough items available. Only ${remaining} left.".replace("${remaining}", t.remaining) : "Some items became unavailable. Update the quantity and try again."
             }
 
-            function L(e) {
+            function E(e) {
                 var t = e.field;
                 return t ? "Enter a valid ${field}".replace("${field}", t) : "An error occurred while processing your checkout. Please try again."
             }
-            var S, E = n(331),
+            var S, L = n(331),
                 z = n(50),
-                I = n(161),
-                D = n(47),
-                M = n(90);
+                D = n(161),
+                I = n(47),
+                G = n(90);
             ! function(e) {
                 e[e.Api = 1] = "Api", e[e.Instrument = 2] = "Instrument"
             }(S || (S = {}));
-            var G = function(e) {
+            var M = function(e) {
                 function t() {
                     var e;
                     return a()(this, t), (e = s()(this, u()(t).apply(this, arguments))).state = {
@@ -363,7 +363,7 @@
                 }, {
                     key: "onInstrumentSuccess",
                     value: function(e, t) {
-                        Object(I.a)(this.state.checkout, e.id, "success", t, this.experiments()), Object(E.a)("discount_code"), this.setState({
+                        Object(D.a)(this.state.checkout, e.id, "success", t, this.experiments()), Object(L.a)("discount_code"), this.setState({
                             errors: null,
                             fetching: !1
                         })
@@ -371,7 +371,7 @@
                 }, {
                     key: "onInstrumentCancel",
                     value: function(e, t) {
-                        Object(I.a)(this.state.checkout, e.id, "cancelled", t, this.experiments()), this.setState({
+                        Object(D.a)(this.state.checkout, e.id, "cancelled", t, this.experiments()), this.setState({
                             fetching: !1,
                             errors: null
                         })
@@ -379,7 +379,7 @@
                 }, {
                     key: "onInstrumentFailure",
                     value: function(e, t) {
-                        Object(I.a)(this.state.checkout, e.id, "failure", t, this.experiments());
+                        Object(D.a)(this.state.checkout, e.id, "failure", t, this.experiments());
                         var n = {
                                 button_store: "Return to store",
                                 title: "Transaction failed"
@@ -431,9 +431,9 @@
                                 case 9:
                                     return this.props.checkoutManager.setContext(n), this.props.checkoutManager.setPageType(this.props.pageType), e.next = 13, this.props.checkoutManager.build(t.id);
                                 case 13:
-                                    return r = e.sent, null === this.state.checkout && (Object(D.a)("spb_checkout_created", {
+                                    return r = e.sent, null === this.state.checkout && (Object(I.a)("spb_checkout_created", {
                                         checkout_token: r.token
-                                    }), Object(M.track)({
+                                    }), Object(G.track)({
                                         event: "spb_checkout_created",
                                         pageType: z.PageType.CheckoutPage,
                                         checkoutToken: r.token
@@ -451,7 +451,7 @@
                     })
                 }]), t
             }(m.Component);
-            G.childContextTypes = {
+            M.childContextTypes = {
                 checkout: m.PropTypes.object,
                 fetching: m.PropTypes.bool,
                 throttled: m.PropTypes.bool,
@@ -464,23 +464,23 @@
                 update: m.PropTypes.func,
                 fetchBeginOptions: m.PropTypes.func,
                 experiments: m.PropTypes.func
-            }, G.defaultProps = {
+            }, M.defaultProps = {
                 expressSelectionGroup: "control"
             }, n.d(t, "b", function() {
                 return d
             }), n.d(t, "a", function() {
-                return G
+                return M
             }), n.d(t, !1, function() {
                 return S
             })
         },
         333: function(e, t, n) {
             "use strict";
-            var r = n(5),
+            var r = n(4),
                 a = n.n(r),
                 o = n(7),
                 i = n.n(o),
-                c = (n(179), n(148), n(348), n(331)),
+                c = (n(179), n(148), n(350), n(331)),
                 s = n(0),
                 p = n.n(s),
                 u = (n(57), n(76)),
@@ -503,14 +503,14 @@
                         return p.a.wrap(function(e) {
                             for (;;) switch (e.prev = e.next) {
                                 case 0:
-                                    return e.abrupt("return", n.e(12).then(n.t.bind(null, 409, 7)).then(function(e) {
+                                    return e.abrupt("return", n.e(12).then(n.t.bind(null, 411, 7)).then(function(e) {
                                         var n = e.default;
                                         r.notifier = r.notifier || n({
                                             apiKey: m.a.bugsnagApiKey || "",
                                             autoNotify: !1,
                                             releaseStage: "production",
                                             notifyReleaseStages: ["production"],
-                                            appVersion: "0024661b468e3835ae7256ca66705578c4703f37\n",
+                                            appVersion: "b8a10a6aa0125af77ba83edb9a99ed5b56a5f55e\n",
                                             beforeSend: d
                                         }), r.notifier.notify(t)
                                     }));
@@ -609,7 +609,7 @@
         },
         334: function(e, t, n) {
             "use strict";
-            var r = n(5),
+            var r = n(4),
                 a = n.n(r),
                 o = n(7),
                 i = n.n(o),
@@ -621,10 +621,10 @@
                 h = n.n(l),
                 m = n(330),
                 d = n(16),
-                f = n(336),
-                y = n(398),
-                g = n(396),
-                v = n(394),
+                f = n(335),
+                y = n(399),
+                g = n(397),
+                v = n(395),
                 b = function(e) {
                     function t() {
                         return a()(this, t), s()(this, u()(t).apply(this, arguments))
@@ -662,32 +662,8 @@
         },
         335: function(e, t, n) {
             "use strict";
-            var r = n(5),
-                a = n.n(r),
-                o = 70,
-                i = function e(t, n, r, o) {
-                    a()(this, e), this.red = t || 0, this.green = n || 0, this.blue = r || 0, this.opacity = void 0 === o ? 1 : o
-                };
-
-            function c(e) {
-                return .2126 * (255 & e.red) + .7152 * (255 & e.green) + .0722 * (255 & e.blue)
-            }
-
-            function s(e) {
-                return 0 !== e.opacity && c(e) / e.opacity < o
-            }
-            n.d(t, "a", function() {
-                return i
-            }), n.d(t, !1, function() {
-                return c
-            }), n.d(t, "b", function() {
-                return s
-            })
-        },
-        336: function(e, t, n) {
-            "use strict";
             var r = n(16),
-                a = n(408),
+                a = n(410),
                 o = "shopify-svg";
 
             function i() {
@@ -889,11 +865,247 @@
                 return o
             })
         },
+        336: function(e, t, n) {
+            "use strict";
+            var r = n(4),
+                a = n.n(r),
+                o = 70,
+                i = function e(t, n, r, o) {
+                    a()(this, e), this.red = t || 0, this.green = n || 0, this.blue = r || 0, this.opacity = void 0 === o ? 1 : o
+                };
+
+            function c(e) {
+                return .2126 * (255 & e.red) + .7152 * (255 & e.green) + .0722 * (255 & e.blue)
+            }
+
+            function s(e) {
+                return 0 !== e.opacity && c(e) / e.opacity < o
+            }
+            n.d(t, "a", function() {
+                return i
+            }), n.d(t, !1, function() {
+                return c
+            }), n.d(t, "b", function() {
+                return s
+            })
+        },
         337: function(e, t, n) {
+            "use strict";
+            var r = n(0),
+                a = n.n(r),
+                o = (n(57), n(76)),
+                i = n.n(o),
+                c = n(4),
+                s = n.n(c),
+                p = n(7),
+                u = n.n(p),
+                l = n(39),
+                h = n.n(l),
+                m = n(26),
+                d = n.n(m),
+                f = n(38),
+                y = n.n(f),
+                g = n(149),
+                v = n(16),
+                b = n(161),
+                k = n(50),
+                _ = n(332),
+                x = "https://payments-eu.amazon.com/checkout/signin",
+                w = "https://payments.amazon.com/checkout/signin",
+                C = "https://payments-fe.amazon.com/checkout/signin",
+                P = "EU",
+                E = "UK",
+                S = "FE",
+                L = new g.b,
+                z = {
+                    NA: "https://static-na.payments-amazon.com/v2/analytics.js",
+                    UK: "https://static-eu.payments-amazon.com/v2/analytics.js",
+                    EU: "https://static-eu.payments-amazon.com/v2/analytics.js",
+                    FE: "https://static-fe.payments-amazon.com/v2/analytics.js"
+                },
+                D = {
+                    NA: {
+                        constant: "amazonpayNA",
+                        event: "amazonpayNA_rendered"
+                    },
+                    UK: {
+                        constant: "amazonpayEU",
+                        event: "amazonpayEU_rendered"
+                    },
+                    EU: {
+                        constant: "amazonpayEU",
+                        event: "amazonpayEU_rendered"
+                    },
+                    FE: {
+                        constant: "amazonpayFE",
+                        event: "amazonpayFE_rendered"
+                    }
+                },
+                I = function(e) {
+                    function t() {
+                        var e;
+                        return s()(this, t), (e = h()(this, d()(t).apply(this, arguments))).form = null, e.instrument = e.props.amazonInstrument, e.handleClick = function() {
+                            var t = i()(a.a.mark(function t(n) {
+                                var r;
+                                return a.a.wrap(function(t) {
+                                    for (;;) switch (t.prev = t.next) {
+                                        case 0:
+                                            return n.preventDefault(), t.next = 3, e.checkout();
+                                        case 3:
+                                            return r = t.sent, Object(b.a)(r, e.instrument.id, "success", e.props.context, e.props.checkoutProcessor.experiments()), t.next = 7, L.get("https://".concat(e.instrument.domain, "/").concat(e.instrument.shopId, "/checkouts/").concat(r.token, "/amazon_payments/store?key=").concat(r.secretKey));
+                                        case 7:
+                                            e.form.submit();
+                                        case 8:
+                                        case "end":
+                                            return t.stop()
+                                    }
+                                }, t, this)
+                            }));
+                            return function(e) {
+                                return t.apply(this, arguments)
+                            }
+                        }(), e
+                    }
+                    var n;
+                    return y()(t, e), u()(t, [{
+                        key: "componentDidMount",
+                        value: function() {
+                            var e = this.instrument.region || "NA";
+                            this.loadScript(e)
+                        }
+                    }, {
+                        key: "render",
+                        value: function() {
+                            var e = this;
+                            return v.createElement("form", {
+                                ref: function(t) {
+                                    e.form = t
+                                },
+                                action: this.formAction(),
+                                method: "post",
+                                acceptCharset: "utf-8"
+                            }, v.createElement("button", {
+                                type: "submit",
+                                onClick: this.handleClick,
+                                disabled: this.props.checkoutProcessor.fetching,
+                                className: this.props.classes
+                            }, this.props.children), v.createElement("input", {
+                                type: "hidden",
+                                name: "clientId",
+                                value: "".concat(this.instrument.clientId)
+                            }), v.createElement("input", {
+                                type: "hidden",
+                                name: "merchantId",
+                                value: this.instrument.merchantId
+                            }), v.createElement("input", {
+                                type: "hidden",
+                                name: "scope",
+                                value: "payments:widget payments:shipping_address"
+                            }), v.createElement("input", {
+                                type: "hidden",
+                                name: "redirectURL",
+                                value: "https://".concat(this.instrument.domain, "/").concat(this.instrument.shopId, "/amazon_payments/callback")
+                            }), v.createElement("input", {
+                                type: "hidden",
+                                name: "sandbox",
+                                value: "".concat(this.instrument.sandbox)
+                            }))
+                        }
+                    }, {
+                        key: "checkout",
+                        value: (n = i()(a.a.mark(function e() {
+                            return a.a.wrap(function(e) {
+                                for (;;) switch (e.prev = e.next) {
+                                    case 0:
+                                        if (!this.props.checkoutProcessor.checkout) {
+                                            e.next = 2;
+                                            break
+                                        }
+                                        return e.abrupt("return", this.props.checkoutProcessor.checkout);
+                                    case 2:
+                                        return e.next = 4, this.props.checkoutProcessor.load(this.instrument, this.props.context);
+                                    case 4:
+                                        return e.abrupt("return", e.sent);
+                                    case 5:
+                                    case "end":
+                                        return e.stop()
+                                }
+                            }, e, this)
+                        })), function() {
+                            return n.apply(this, arguments)
+                        })
+                    }, {
+                        key: "formAction",
+                        value: function() {
+                            switch (this.instrument.region) {
+                                case S:
+                                    return C;
+                                case E:
+                                case P:
+                                    return x;
+                                default:
+                                    return w
+                            }
+                        }
+                    }, {
+                        key: "loadScript",
+                        value: function(e) {
+                            g.j.inject(z[e], D[e])
+                        }
+                    }]), t
+                }(v.Component),
+                G = Object(k.withAppState)(Object(_.b)(I)),
+                M = n(330),
+                T = n(183),
+                A = n(348),
+                j = "AmazonPayButton",
+                V = "buy_now",
+                F = function(e) {
+                    function t() {
+                        var e;
+                        return s()(this, t), (e = h()(this, d()(t).apply(this, arguments))).node = null, e
+                    }
+                    return y()(t, e), u()(t, [{
+                        key: "componentDidMount",
+                        value: function() {
+                            var e = this.props.context,
+                                t = this.props.checkoutProcessor.checkoutManager;
+                            t.setContext(e), T.a.renderableInstruments({
+                                context: e
+                            });
+                            var n = this.amazonInstrument;
+                            this.node && (this.node.id = j, n.render(this.node, t))
+                        }
+                    }, {
+                        key: "render",
+                        value: function() {
+                            var e = this;
+                            return v.createElement("div", {
+                                ref: function(t) {
+                                    return e.node = t
+                                },
+                                className: Object(M.classNames)(A.RenderablePaymentButton, this.props.styles)
+                            })
+                        }
+                    }, {
+                        key: "amazonInstrument",
+                        get: function() {
+                            return this.props.context === V ? this.props.instrument : this.props.contextInstrument
+                        }
+                    }]), t
+                }(v.PureComponent),
+                N = Object(k.withAppState)(Object(_.b)(F));
+            n.d(t, "a", function() {
+                return G
+            }), n.d(t, "b", function() {
+                return N
+            })
+        },
+        338: function(e, t, n) {
             "use strict";
             var r = n(162),
                 a = n.n(r),
-                o = (n(183), n(181), n(222), n(5)),
+                o = (n(184), n(181), n(222), n(4)),
                 i = n.n(o),
                 c = n(7),
                 s = n.n(c),
@@ -905,7 +1117,7 @@
                 d = n.n(m),
                 f = n(16),
                 y = n(333),
-                g = n(335),
+                g = n(336),
                 v = function(e) {
                     function t() {
                         var e;
@@ -961,10 +1173,10 @@
                 return v
             })
         },
-        338: function(e, t, n) {
+        339: function(e, t, n) {
             "use strict";
             n(78), n(181);
-            var r = n(5),
+            var r = n(4),
                 a = n.n(r),
                 o = n(7),
                 i = n.n(o),
@@ -976,13 +1188,13 @@
                 h = n.n(l),
                 m = n(16),
                 d = n(330),
-                f = n(379),
-                y = n(388),
+                f = n(380),
+                y = n(389),
                 g = n.n(y),
                 v = n(50),
                 b = n(332),
-                k = n(184),
-                _ = n(349),
+                k = n(183),
+                _ = n(348),
                 x = "buy_now",
                 w = function(e) {
                     function t() {
@@ -1014,7 +1226,7 @@
                         key: "render",
                         value: function() {
                             var e = f.a[this.instrument.id],
-                                t = Object(d.classNames)(_.RenderablePayPalButton, e.classNames[this.backgroundTheme()], this.props.styles),
+                                t = Object(d.classNames)(_.RenderablePaymentButton, e.classNames[this.backgroundTheme()], this.props.styles),
                                 n = this.instrument;
                             return m.createElement(g.a, {
                                 className: t,
@@ -1057,13 +1269,228 @@
                 return w
             })
         },
-        340: function(e, t, n) {
+        341: function(e, t, n) {
+            "use strict";
+            n(78), n(222);
+            var r = n(0),
+                a = n.n(r),
+                o = (n(57), n(76)),
+                i = n.n(o),
+                c = n(4),
+                s = n.n(c),
+                p = n(7),
+                u = n.n(p),
+                l = n(39),
+                h = n.n(l),
+                m = n(26),
+                d = n.n(m),
+                f = n(38),
+                y = n.n(f),
+                g = (n(186), n(330)),
+                v = n(334),
+                b = n(16),
+                k = n(393),
+                _ = function(e) {
+                    function t() {
+                        return s()(this, t), h()(this, d()(t).apply(this, arguments))
+                    }
+                    return y()(t, e), u()(t, [{
+                        key: "render",
+                        value: function() {
+                            var e = this.props,
+                                t = e.variant,
+                                n = e.children,
+                                r = e.visuallyHidden,
+                                a = Object(g.classNames)(t && k[t], r && k.visuallyHidden);
+                            return b.createElement("span", {
+                                className: a
+                            }, n)
+                        }
+                    }]), t
+                }(b.PureComponent);
+            _.defaultProps = {
+                visuallyHidden: !1
+            };
+            var x = n(380),
+                w = n(50),
+                C = n(332),
+                P = n(337),
+                E = n(391),
+                S = 16,
+                L = Object.freeze({
+                    PayPalInContext: 18,
+                    ApplePay: 20,
+                    AmazonPay: S,
+                    Checkout: S,
+                    ShopifyPay: 24,
+                    NonAcceleratedDummyInstrument: S,
+                    DummyInstrument: S,
+                    DummyInstrumentForcedFailure: S,
+                    PayPal: S,
+                    PayPalV4: S,
+                    Venmo: S,
+                    GooglePay: 20
+                }),
+                z = function(e) {
+                    function t() {
+                        var e;
+                        return s()(this, t), (e = h()(this, d()(t).apply(this, arguments))).handleClick = function() {
+                            var t = i()(a.a.mark(function t(n) {
+                                var r;
+                                return a.a.wrap(function(t) {
+                                    for (;;) switch (t.prev = t.next) {
+                                        case 0:
+                                            if (n.preventDefault(), !e.props.checkoutDisabled) {
+                                                t.next = 3;
+                                                break
+                                            }
+                                            return t.abrupt("return", window.location.href = "".concat(window.location.origin, "/checkout"));
+                                        case 3:
+                                            e.props.disabled || (r = e.props.context, e.props.checkoutProcessor.begin(e.instrument, r, e.state));
+                                        case 4:
+                                        case "end":
+                                            return t.stop()
+                                    }
+                                }, t, this)
+                            }));
+                            return function(e) {
+                                return t.apply(this, arguments)
+                            }
+                        }(), e
+                    }
+                    var n;
+                    return y()(t, e), u()(t, [{
+                        key: "componentDidMount",
+                        value: (n = i()(a.a.mark(function e() {
+                            var t;
+                            return a.a.wrap(function(e) {
+                                for (;;) switch (e.prev = e.next) {
+                                    case 0:
+                                        return e.next = 2, this.props.checkoutProcessor.fetchBeginOptions(this.instrument);
+                                    case 2:
+                                        t = e.sent, this.setState({
+                                            estimatedPrice: t.estimatedPrice,
+                                            requiresShipping: t.requiresShipping
+                                        });
+                                    case 4:
+                                    case "end":
+                                        return e.stop()
+                                }
+                            }, e, this)
+                        })), function() {
+                            return n.apply(this, arguments)
+                        })
+                    }, {
+                        key: "backgroundTheme",
+                        value: function() {
+                            return this.props.dark ? "light" : "dark"
+                        }
+                    }, {
+                        key: "render",
+                        value: function() {
+                            var e = this.props,
+                                t = e.disabled,
+                                n = e.checkoutProcessor,
+                                r = e.styles,
+                                a = this.props.disabled || n.fetching,
+                                o = a ? void 0 : this.handleClick,
+                                i = "".concat(this.instrument.id, "-button"),
+                                c = Object(g.classNames)(r, this.backgroundStyle, (t || n.fetching) && E.disabled);
+                            switch (this.instrument.id) {
+                                case "Checkout":
+                                    return b.createElement("button", {
+                                        disabled: a,
+                                        type: "button",
+                                        className: c,
+                                        onClick: o,
+                                        "data-testid": i
+                                    }, this.content);
+                                case "AmazonPay":
+                                    return b.createElement(P.a, {
+                                        context: this.props.context,
+                                        amazonInstrument: this.instrument,
+                                        classes: c
+                                    }, this.content);
+                                default:
+                                    return b.createElement("div", {
+                                        "aria-disabled": a,
+                                        role: "button",
+                                        tabIndex: 0,
+                                        className: c,
+                                        onClick: o,
+                                        "data-testid": i
+                                    }, this.content)
+                            }
+                        }
+                    }, {
+                        key: "instrument",
+                        get: function() {
+                            return "buy_now" === this.props.context ? this.props.instrument : this.props.contextInstrument
+                        }
+                    }, {
+                        key: "backgroundStyle",
+                        get: function() {
+                            var e = x.a[this.instrument.id],
+                                t = this.props.dark ? e.classNames.dark : e.classNames.light;
+                            return E[t]
+                        }
+                    }, {
+                        key: "content",
+                        get: function() {
+                            return D(this.props.context, this.props.prefixText, this.instrument, this.backgroundTheme(), this.props.callToAction)
+                        }
+                    }]), t
+                }(b.Component);
+
+            function D(e, t, n) {
+                var r = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : "dark",
+                    a = arguments.length > 4 ? arguments[4] : void 0,
+                    o = x.a[n.id];
+                if ("text" === o.type) return o.copy[e];
+                var i = o.icons[r],
+                    c = I(n.id),
+                    s = c * o.icons.ratio,
+                    p = b.createElement(v.a, {
+                        key: i,
+                        source: i,
+                        height: c,
+                        width: s
+                    }),
+                    u = [];
+                return u = a ? a.split(/({{ICON}})/g).map(function(e, t) {
+                    return "{{ICON}}" === e ? p : b.createElement("span", {
+                        "aria-hidden": "true",
+                        key: t
+                    }, e)
+                }) : [p], [b.createElement(_, {
+                    key: "description-".concat(p),
+                    visuallyHidden: !0
+                }, "".concat(t, " ").concat(o.name)), u]
+            }
+
+            function I(e) {
+                return L[e] || S
+            }
+            z.defaultProps = {
+                cleanslate: !0,
+                context: "sheet",
+                disabled: !1,
+                dark: !0
+            };
+            var G = Object(w.withAppState)(Object(C.b)(z));
+            n.d(t, "a", function() {
+                return G
+            }), n.d(t, !1, function() {
+                return z
+            })
+        },
+        342: function(e, t, n) {
             "use strict";
             var r = n(0),
                 a = n.n(r),
                 o = (n(57), n(76)),
                 i = n.n(o),
-                c = n(5),
+                c = n(4),
                 s = n.n(c),
                 p = n(7),
                 u = n.n(p),
@@ -1117,7 +1544,7 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
-                                        return e.next = 2, console.log('no'), fetch("/cart.js");
+                                        return e.next = 2, fetch("/cart.js");
                                     case 2:
                                         return n = e.sent, e.next = 5, n.json();
                                     case 5:
@@ -1132,7 +1559,7 @@
                         })
                     }]), e
                 }(),
-                h = (n(148), n(227), n(221), n(220), n(179), n(150), n(183), "/api/graphql"),
+                h = (n(148), n(227), n(221), n(220), n(179), n(150), n(184), "/api/graphql"),
                 m = function() {
                     function e(t, n, r) {
                         s()(this, e), this.checkoutForm = t, this.accessToken = n, this.currency = r
@@ -1145,15 +1572,12 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
-                                        // have to redefine o as having a value to make the buttons work
-                                        return t = this.checkoutForm.elements, n = t.quantity, r = n ? Number(n.value) : 1, o = this.checkoutForm.querySelector('.multiselect_wrap') ? null : this.getVariantId(), i = this.getProperties(),
-										c = {
+                                        return t = this.checkoutForm.elements, n = t.quantity, r = n ? Number(n.value) : 1, o =this.checkoutForm.querySelector('.multiselect_wrap') ? null : this.getVariantId(), i = this.getProperties(), c = {
                                             variant_id: o,
                                             quantity: r
                                         }, this.isEmptyProperties(i) || (c.properties = i), 
-                                        // amazing script to take over the line items
-                                        s = this.checkoutForm.querySelector('.multiselect_wrap') ? { line_items: Array.from(this.checkoutForm.querySelectorAll('[name="id"]:checked')).map(x => ({variant_id:x.value, quantity: x.getAttribute('quantity')})) } : {line_items: [c]},
-											e.abrupt("return", s);
+                                          s = this.checkoutForm.querySelector('.multiselect_wrap') ? { line_items: Array.from(this.checkoutForm.querySelectorAll('[name="id"]:checked')).map(x => ({variant_id:x.value, quantity: x.getAttribute('quantity')})) } : {line_items: [c]},
+                                          e.abrupt("return", s);
                                     case 9:
                                     case "end":
                                         return e.stop()
@@ -1169,17 +1593,7 @@
                             return a.a.wrap(function(e) {
                                 for (;;) switch (e.prev = e.next) {
                                     case 0:
-                                        if(this.checkoutForm.querySelector('.multiselect_wrap')) {
-                                            return t = this.checkoutForm.querySelector('.multiselect_wrap input[type="checkbox"]').value, n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
-                                                method: "POST",
-                                                headers: {
-                                                    "Content-Type": "application/graphql",
-                                                    "X-Shopify-Storefront-Access-Token": this.accessToken
-                                                },
-                                                body: d(n)
-                                            });                                            
-                                        }else{
-                                        return t = this.getVariantId(), n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
+                                        return t = this.checkoutForm.querySelector('.multiselect_wrap') ? this.checkoutForm.querySelector('.multiselect_wrap input[type="checkbox"]').value : this.getVariantId(), n = btoa("gid://shopify/ProductVariant/".concat(t)), e.next = 4, fetch(h, {
                                             method: "POST",
                                             headers: {
                                                 "Content-Type": "application/graphql",
@@ -1187,7 +1601,6 @@
                                             },
                                             body: d(n)
                                         });
-                                        }
                                     case 4:
                                         return r = e.sent, e.next = 7, r.json();
                                     case 7:
@@ -1200,8 +1613,7 @@
                         })), function() {
                             return n.apply(this, arguments)
                         })
-                    },
-               {
+                    }, {
                         key: "fetchBeginOptions",
                         value: (t = i()(a.a.mark(function e(t) {
                             var n, r, o, i = this;
@@ -1214,7 +1626,7 @@
                                         }
                                         return e.abrupt("return", {});
                                     case 2:
-                                            return n = {}, e.next = 5, this.fetchVariantDetails();
+                                        return n = {}, e.next = 5, this.fetchVariantDetails();
                                     case 5:
                                         if (r = e.sent, n.requiresShipping = r.data.node.requiresShipping, r.data.shop.paymentSettings.currencyCode !== this.currency) {
                                             e.next = 10;
@@ -1266,7 +1678,6 @@
                                     if (r) throw a
                                 }
                             }
-							
                             return e
                         }
                     }, {
@@ -1364,23 +1775,21 @@
                 }();
             n.d(t, "a", function() {
                 return l
-
             }), n.d(t, "b", function() {
                 return m
             }), n.d(t, "c", function() {
                 return y
             })
         },
-        341: function(e, t, n) {
+        343: function(e, t, n) {
             "use strict";
-            n(78), n(222);
             var r = n(0),
                 a = n.n(r),
-                o = (n(57), n(76)),
+                o = (n(93), n(179), n(148), n(180), n(57), n(76)),
                 i = n.n(o),
-                c = n(5),
-                s = n.n(c),
-                p = n(7),
+                c = (n(159), n(50)),
+                s = n(13),
+                p = n(4),
                 u = n.n(p),
                 l = n(39),
                 h = n.n(l),
@@ -1388,381 +1797,18 @@
                 d = n.n(m),
                 f = n(38),
                 y = n.n(f),
-                g = (n(186), n(330)),
-                v = n(334),
-                b = n(16),
-                k = n(392),
-                _ = function(e) {
-                    function t() {
-                        return s()(this, t), h()(this, d()(t).apply(this, arguments))
-                    }
-                    return y()(t, e), u()(t, [{
-                        key: "render",
-                        value: function() {
-                            var e = this.props,
-                                t = e.variant,
-                                n = e.children,
-                                r = e.visuallyHidden,
-                                a = Object(g.classNames)(t && k[t], r && k.visuallyHidden);
-                            return b.createElement("span", {
-                                className: a
-                            }, n)
-                        }
-                    }]), t
-                }(b.PureComponent);
-            _.defaultProps = {
-                visuallyHidden: !1
-            };
-            var x = n(379),
-                w = n(50),
-                C = n(332),
-                P = n(149),
-                L = n(161),
-                S = "https://payments-eu.amazon.com/checkout/signin",
-                E = "https://payments.amazon.com/checkout/signin",
-                z = "https://payments-fe.amazon.com/checkout/signin",
-                I = "EU",
-                D = "UK",
-                M = "FE",
-                G = new P.b,
-                T = {
-                    NA: "https://static-na.payments-amazon.com/v2/analytics.js",
-                    UK: "https://static-eu.payments-amazon.com/v2/analytics.js",
-                    EU: "https://static-eu.payments-amazon.com/v2/analytics.js",
-                    FE: "https://static-fe.payments-amazon.com/v2/analytics.js"
-                },
-                A = {
-                    NA: {
-                        constant: "amazonpayNA",
-                        event: "amazonpayNA_rendered"
-                    },
-                    UK: {
-                        constant: "amazonpayEU",
-                        event: "amazonpayEU_rendered"
-                    },
-                    EU: {
-                        constant: "amazonpayEU",
-                        event: "amazonpayEU_rendered"
-                    },
-                    FE: {
-                        constant: "amazonpayFE",
-                        event: "amazonpayFE_rendered"
-                    }
-                },
-                j = function(e) {
-                    function t() {
-                        var e;
-                        return s()(this, t), (e = h()(this, d()(t).apply(this, arguments))).form = null, e.instrument = e.props.amazonInstrument, e.handleClick = function() {
-                            var t = i()(a.a.mark(function t(n) {
-                                var r;
-                                return a.a.wrap(function(t) {
-                                    for (;;) switch (t.prev = t.next) {
-                                        case 0:
-                                            return n.preventDefault(), t.next = 3, e.checkout();
-                                        case 3:
-                                            return r = t.sent, Object(L.a)(r, e.instrument.id, "success", e.props.context, e.props.checkoutProcessor.experiments()), t.next = 7, G.get("https://".concat(e.instrument.domain, "/").concat(e.instrument.shopId, "/checkouts/").concat(r.token, "/amazon_payments/store?key=").concat(r.secretKey));
-                                        case 7:
-                                            e.form.submit();
-                                        case 8:
-                                        case "end":
-                                            return t.stop()
-                                    }
-                                }, t, this)
-                            }));
-                            return function(e) {
-                                return t.apply(this, arguments)
-                            }
-                        }(), e
-                    }
-                    var n;
-                    return y()(t, e), u()(t, [{
-                        key: "componentDidMount",
-                        value: function() {
-                            var e = this.instrument.region || "NA";
-                            this.loadScript(e)
-                        }
-                    }, {
-                        key: "render",
-                        value: function() {
-                            var e = this;
-                            return b.createElement("form", {
-                                ref: function(t) {
-                                    e.form = t
-                                },
-                                action: this.formAction(),
-                                method: "post",
-                                acceptCharset: "utf-8"
-                            }, b.createElement("button", {
-                                type: "submit",
-                                onClick: this.handleClick,
-                                disabled: this.props.checkoutProcessor.fetching,
-                                className: this.props.classes
-                            }, this.props.children), b.createElement("input", {
-                                type: "hidden",
-                                name: "clientId",
-                                value: "".concat(this.instrument.clientId)
-                            }), b.createElement("input", {
-                                type: "hidden",
-                                name: "merchantId",
-                                value: this.instrument.merchantId
-                            }), b.createElement("input", {
-                                type: "hidden",
-                                name: "scope",
-                                value: "payments:widget payments:shipping_address"
-                            }), b.createElement("input", {
-                                type: "hidden",
-                                name: "redirectURL",
-                                value: "https://".concat(this.instrument.domain, "/").concat(this.instrument.shopId, "/amazon_payments/callback")
-                            }), b.createElement("input", {
-                                type: "hidden",
-                                name: "sandbox",
-                                value: "".concat(this.instrument.sandbox)
-                            }))
-                        }
-                    }, {
-                        key: "checkout",
-                        value: (n = i()(a.a.mark(function e() {
-                            return a.a.wrap(function(e) {
-                                for (;;) switch (e.prev = e.next) {
-                                    case 0:
-                                        if (!this.props.checkoutProcessor.checkout) {
-                                            e.next = 2;
-                                            break
-                                        }
-                                        return e.abrupt("return", this.props.checkoutProcessor.checkout);
-                                    case 2:
-                                        return e.next = 4, this.props.checkoutProcessor.load(this.instrument, this.props.context);
-                                    case 4:
-                                        return e.abrupt("return", e.sent);
-                                    case 5:
-                                    case "end":
-                                        return e.stop()
-                                }
-                            }, e, this)
-                        })), function() {
-                            return n.apply(this, arguments)
-                        })
-                    }, {
-                        key: "formAction",
-                        value: function() {
-                            switch (this.instrument.region) {
-                                case M:
-                                    return z;
-                                case D:
-                                case I:
-                                    return S;
-                                default:
-                                    return E
-                            }
-                        }
-                    }, {
-                        key: "loadScript",
-                        value: function(e) {
-                            P.j.inject(T[e], A[e])
-                        }
-                    }]), t
-                }(b.Component),
-                F = Object(w.withAppState)(Object(C.b)(j)),
-                V = n(390),
-                H = 16,
-                N = Object.freeze({
-                    PayPalInContext: 18,
-                    ApplePay: 20,
-                    AmazonPay: H,
-                    Checkout: H,
-                    ShopifyPay: 24,
-                    NonAcceleratedDummyInstrument: H,
-                    DummyInstrument: H,
-                    DummyInstrumentForcedFailure: H,
-                    PayPal: H,
-                    PayPalV4: H,
-                    Venmo: H,
-                    GooglePay: 20
-                }),
-                O = function(e) {
-                    function t() {
-                        var e;
-                        return s()(this, t), (e = h()(this, d()(t).apply(this, arguments))).handleClick = function() {
-                            var t = i()(a.a.mark(function t(n) {
-                                var r;
-                                return a.a.wrap(function(t) {
-                                    for (;;) switch (t.prev = t.next) {
-                                        case 0:
-                                            if (n.preventDefault(), !e.props.checkoutDisabled) {
-                                                t.next = 3;
-                                                break
-                                            }
-                                            return t.abrupt("return", window.location.href = "".concat(window.location.origin, "/checkout"));
-                                        case 3:
-                                            e.props.disabled || (r = e.props.context, e.props.checkoutProcessor.begin(e.instrument, r, e.state));
-                                        case 4:
-                                        case "end":
-                                            return t.stop()
-                                    }
-                                }, t, this)
-                            }));
-                            return function(e) {
-                                return t.apply(this, arguments)
-                            }
-                        }(), e
-                    }
-                    var n;
-                    return y()(t, e), u()(t, [{
-                        key: "componentDidMount",
-                        value: (n = i()(a.a.mark(function e() {
-                            var t;
-                            return a.a.wrap(function(e) {
-                                for (;;) switch (e.prev = e.next) {
-                                    case 0:
-                                        return e.next = 2, this.props.checkoutProcessor.fetchBeginOptions(this.instrument);
-                                    case 2:
-                                        t = e.sent, this.setState({
-                                            estimatedPrice: t.estimatedPrice,
-                                            requiresShipping: t.requiresShipping
-                                        });
-                                    case 4:
-                                    case "end":
-                                        return e.stop()
-                                }
-                            }, e, this)
-                        })), function() {
-                            return n.apply(this, arguments)
-                        })
-                    }, {
-                        key: "backgroundTheme",
-                        value: function() {
-                            return this.props.dark ? "light" : "dark"
-                        }
-                    }, {
-                        key: "render",
-                        value: function() {
-                            var e = this.props,
-                                t = e.disabled,
-                                n = e.checkoutProcessor,
-                                r = e.styles,
-                                a = this.props.disabled || n.fetching,
-                                o = a ? void 0 : this.handleClick,
-                                i = "".concat(this.instrument.id, "-button"),
-                                c = Object(g.classNames)(r, this.backgroundStyle, (t || n.fetching) && V.disabled);
-					      // check for multiselect and make sure button isnt disabled
-                          if(this.context.checkoutManager.dataSource.checkoutForm.querySelector('.multiselect_wrap')) {
-                            var a = false || n.fetching;
-                          }
-                            switch (this.instrument.id) {
-                                case "Checkout":
-                                    return b.createElement("button", {
-                                        disabled: a,
-                                        type: "button",
-                                        className: c,
-                                        onClick: o,
-                                        "data-testid": i
-                                    }, this.content);
-                                case "AmazonPay":
-                                    return b.createElement(F, {
-                                        context: this.props.context,
-                                        amazonInstrument: this.instrument,
-                                        classes: c
-                                    }, this.content);
-                                default:
-                                    return b.createElement("div", {
-                                        "aria-disabled": a,
-                                        role: "button",
-                                        tabIndex: 0,
-                                        className: c,
-                                        onClick: o,
-                                        "data-testid": i
-                                    }, this.content)
-                            }
-                        }
-                    }, {
-                        key: "instrument",
-                        get: function() {
-                            return "buy_now" === this.props.context ? this.props.instrument : this.props.contextInstrument
-                        }
-                    }, {
-                        key: "backgroundStyle",
-                        get: function() {
-                            var e = x.a[this.instrument.id],
-                                t = this.props.dark ? e.classNames.dark : e.classNames.light;
-                            return V[t]
-                        }
-                    }, {
-                        key: "content",
-                        get: function() {
-                            return Z(this.props.context, this.props.prefixText, this.instrument, this.backgroundTheme(), this.props.callToAction)
-                        }
-                    }]), t
-                }(b.Component);
-
-            function Z(e, t, n) {
-                var r = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : "dark",
-                    a = arguments.length > 4 ? arguments[4] : void 0,
-                    o = x.a[n.id];
-                if ("text" === o.type) return o.copy[e];
-                var i = o.icons[r],
-                    c = B(n.id),
-                    s = c * o.icons.ratio,
-                    p = b.createElement(v.a, {
-                        key: i,
-                        source: i,
-                        height: c,
-                        width: s
-                    }),
-                    u = [];
-                return u = a ? a.split(/({{ICON}})/g).map(function(e, t) {
-                    return "{{ICON}}" === e ? p : b.createElement("span", {
-                        "aria-hidden": "true",
-                        key: t
-                    }, e)
-                }) : [p], [b.createElement(_, {
-                    key: "description-".concat(p),
-                    visuallyHidden: !0
-                }, "".concat(t, " ").concat(o.name)), u]
-            }
-
-            function B(e) {
-                return N[e] || H
-            }
-            O.defaultProps = {
-                cleanslate: !0,
-                context: "sheet",
-                disabled: !1,
-                dark: !0
-            };
-            var Q = Object(w.withAppState)(Object(C.b)(O));
-            n.d(t, "a", function() {
-                return Q
-            }), n.d(t, !1, function() {
-                return O
-            })
-        },
-        342: function(e, t, n) {
-            "use strict";
-            var r = n(0),
-                a = n.n(r),
-                o = (n(93), n(179), n(148), n(180), n(57), n(76)),
-                i = n.n(o),
-                c = (n(159), n(13)),
-                s = n(5),
-                p = n.n(s),
-                u = n(39),
-                l = n.n(u),
-                h = n(26),
-                m = n.n(h),
-                d = n(38),
-                f = n.n(d),
-                y = n(147),
-                g = n.n(y),
-                v = (n(185), n(149)),
-                b = n(7),
-                k = n.n(b),
-                _ = n(378),
-                x = function() {
+                g = n(147),
+                v = n.n(g),
+                b = (n(185), n(149)),
+                k = n(7),
+                _ = n.n(k),
+                x = n(379),
+                w = function() {
                     function e(t) {
-                        p()(this, e), this.id = "DummyInstrument", t && Object.assign(this, t)
+                        u()(this, e), this.id = "DummyInstrument", t && Object.assign(this, t)
                     }
                     var t, n, r;
-                    return k()(e, [{
+                    return _()(e, [{
                         key: "begin",
                         value: (r = i()(a.a.mark(function e(t) {
                             return a.a.wrap(function(e) {
@@ -1771,7 +1817,7 @@
                                         return e.next = 2, t;
                                     case 2:
                                         return e.abrupt("return", {
-                                            state: _.a.Success
+                                            state: x.a.Success
                                         });
                                     case 3:
                                     case "end":
@@ -1813,30 +1859,30 @@
                         })
                     }]), e
                 }();
-            x.isSupported = !0;
-            var w = function(e) {
+            w.isSupported = !0;
+            var C = function(e) {
                     function t() {
                         var e;
-                        return p()(this, t), (e = l()(this, m()(t).apply(this, arguments))).id = "DummyInstrumentForcedFailure", e
+                        return u()(this, t), (e = h()(this, d()(t).apply(this, arguments))).id = "DummyInstrumentForcedFailure", e
                     }
-                    return f()(t, e), k()(t, [{
+                    return y()(t, e), _()(t, [{
                         key: "begin",
                         value: function() {
                             var e = {
                                 errors: ["Forced Failure"],
-                                state: _.a.Failure
+                                state: x.a.Failure
                             };
                             return Promise.resolve(e)
                         }
                     }]), t
-                }(x),
-                C = function(e) {
+                }(w),
+                P = function(e) {
                     function t() {
                         var e;
-                        return p()(this, t), (e = l()(this, m()(t).apply(this, arguments))).id = "NonAcceleratedDummyInstrument", e
+                        return u()(this, t), (e = h()(this, d()(t).apply(this, arguments))).id = "NonAcceleratedDummyInstrument", e
                     }
                     var n;
-                    return f()(t, e), k()(t, [{
+                    return y()(t, e), _()(t, [{
                         key: "canMakeAcceleratedPurchase",
                         value: (n = i()(a.a.mark(function e() {
                             return a.a.wrap(function(e) {
@@ -1852,24 +1898,24 @@
                             return n.apply(this, arguments)
                         })
                     }]), t
-                }(x),
-                P = {
-                    AmazonPay: v.a,
-                    ApplePay: v.c,
-                    Checkout: v.d,
-                    GooglePay: v.h,
-                    NonAcceleratedDummyInstrument: C,
-                    DummyInstrument: x,
-                    DummyInstrumentForcedFailure: w,
-                    PayPal: v.i,
-                    Venmo: v.l,
-                    ShopifyPay: v.k
+                }(w),
+                E = {
+                    AmazonPay: b.a,
+                    ApplePay: b.c,
+                    Checkout: b.d,
+                    GooglePay: b.h,
+                    NonAcceleratedDummyInstrument: P,
+                    DummyInstrument: w,
+                    DummyInstrumentForcedFailure: C,
+                    PayPal: b.i,
+                    Venmo: b.l,
+                    ShopifyPay: b.k
                 },
-                L = Object.keys(P),
-                S = (g()(Error), P);
-            var E = n(44);
+                S = Object.keys(E),
+                L = (v()(Error), E);
+            var z = n(44);
 
-            function z(e, t) {
+            function D(e, t) {
                 var n = e.paymentInstruments,
                     r = n.amazonPayConfig,
                     a = n.applePayConfig,
@@ -1881,82 +1927,84 @@
                     u = n.showDummyInstrument,
                     l = n.showNonAcceleratedDummyInstrument,
                     h = [],
-                    m = S.Checkout.load(i);
+                    m = L.Checkout.load(i);
                 if (I("Checkout", t, m), h.push({
                         instrumentPromise: m,
                         metadata: "Checkout"
                     }), c) {
-                    var d = S.ShopifyPay.load(c);
+                    var d = L.ShopifyPay.load(c);
                     I("ShopifyPay", t, d), h.push({
                         instrumentPromise: d,
                         metadata: "ShopifyPay"
                     })
                 }
                 if (r) {
-                    var f = S.AmazonPay.load(r);
-                    I("AmazonPay", t, f), h.push({
-                        instrumentPromise: f,
+                    var f = V(t);
+                    r.placement = f;
+                    var y = L.AmazonPay.load(r);
+                    I("AmazonPay", t, y), h.push({
+                        instrumentPromise: y,
                         metadata: "AmazonPay"
                     })
                 }
-                if (a && S.ApplePay.isSupported) {
-                    var y = S.ApplePay.load(a);
-                    I("ApplePay", t, y), h.push({
-                        instrumentPromise: y,
+                if (a && L.ApplePay.isSupported) {
+                    var g = L.ApplePay.load(a);
+                    I("ApplePay", t, g), h.push({
+                        instrumentPromise: g,
                         metadata: "ApplePay"
                     })
                 }
                 if (o) {
-                    var g = S.PayPal.load(o);
-                    if (I("PayPal", t, g), h.push({
-                            instrumentPromise: g,
+                    var v = L.PayPal.load(o);
+                    if (I("PayPal", t, v), h.push({
+                            instrumentPromise: v,
                             metadata: "PayPal"
                         }), o.venmoSupported) {
-                        var v = S.Venmo.load(o);
-                        I("Venmo", t, v), h.push({
-                            instrumentPromise: v,
+                        var b = L.Venmo.load(o);
+                        I("Venmo", t, b), h.push({
+                            instrumentPromise: b,
                             metadata: "Venmo"
                         })
                     }
                 }
                 if (s) {
-                    var b = S.GooglePay.load(s, "Bindable");
-                    I("GooglePay", t, b), h.push({
-                        instrumentPromise: b,
+                    var k = L.GooglePay.load(s, "Bindable");
+                    I("GooglePay", t, k), h.push({
+                        instrumentPromise: k,
                         metadata: "GooglePay"
                     })
                 }
                 return p && h.push({
-                    instrumentPromise: S.DummyInstrumentForcedFailure.load({}),
+                    instrumentPromise: L.DummyInstrumentForcedFailure.load({}),
                     metadata: "DummyInstrumentForcedFailure"
                 }), u && h.push({
-                    instrumentPromise: S.DummyInstrument.load({}),
+                    instrumentPromise: L.DummyInstrument.load({}),
                     metadata: "DummyInstrument"
                 }), l && h.push({
-                    instrumentPromise: S.NonAcceleratedDummyInstrument.load({}),
+                    instrumentPromise: L.NonAcceleratedDummyInstrument.load({}),
                     metadata: "NonAcceleratedDummyInstrument"
                 }), h
             }
 
             function I(e, t, n) {
                 var r = "Load instrument ".concat(e);
-                Object(E.b)(r), n.then(function(e) {
+                Object(z.b)(r), n.then(function(e) {
                     var n = e && e.id;
-                    n && (Object(c.a)("instrument.loading.time", Object(E.a)(r), {
+                    n && (Object(s.a)("instrument.loading.time", Object(z.a)(r), {
                         instrument: n,
                         pageType: t
-                    }), Object(c.b)("available.instrument", {
+                    }), Object(s.b)("available.instrument", {
                         instrument: n,
                         pageType: t
                     }))
                 })
             }
             n.d(t, "a", function() {
-                return z
+                return D
             }), n.d(t, "b", function() {
                 return M
             });
-            var D = function(e) {
+            var G = function(e) {
                 var t = e.paymentInstruments.paypalConfig;
                 return t ? {
                     paymentInstruments: Object.assign({}, e.paymentInstruments, {
@@ -1968,16 +2016,16 @@
             };
 
             function M(e, t) {
-                return G.apply(this, arguments)
+                return T.apply(this, arguments)
             }
 
-            function G() {
-                return (G = i()(a.a.mark(function e(t, n) {
-                    var r, o, i, c, s, p, u, l, h, m, d, f, y;
+            function T() {
+                return (T = i()(a.a.mark(function e(t, n) {
+                    var r, o, i, c, s, p, u, l, h, m, d, f, y, g;
                     return a.a.wrap(function(e) {
                         for (;;) switch (e.prev = e.next) {
                             case 0:
-                                return r = D(t).paymentInstruments, o = r.amazonPayConfig, i = r.applePayConfig, c = r.googlePayConfig, s = r.paypalConfig, p = r.shopifyPayConfig, u = [], o && (l = S.AmazonPay.load(o), u.push(T("AmazonPay", n, l))), i && S.ApplePay.isSupported && (h = S.ApplePay.load(i), u.push(T("ApplePay", n, h))), s && (m = S.PayPal.load(s), u.push(T("PayPal", n, m)), s.venmoSupported && (d = S.Venmo.load(s), u.push(T("Venmo", n, d)))), c && (f = S.GooglePay.load(c, "Bindable"), u.push(T("GooglePay", n, f))), p && (y = S.ShopifyPay.load(p), u.push(T("ShopifyPay", n, y))), e.next = 9, Promise.all(u);
+                                return r = G(t).paymentInstruments, o = r.amazonPayConfig, i = r.applePayConfig, c = r.googlePayConfig, s = r.paypalConfig, p = r.shopifyPayConfig, u = [], o && (l = V(n), o.placement = l, h = L.AmazonPay.load(o), u.push(A("AmazonPay", n, h))), i && L.ApplePay.isSupported && (m = L.ApplePay.load(i), u.push(A("ApplePay", n, m))), s && (d = L.PayPal.load(s), u.push(A("PayPal", n, d)), s.venmoSupported && (f = L.Venmo.load(s), u.push(A("Venmo", n, f)))), c && (y = L.GooglePay.load(c, "Bindable"), u.push(A("GooglePay", n, y))), p && (g = L.ShopifyPay.load(p), u.push(A("ShopifyPay", n, g))), e.next = 9, Promise.all(u);
                             case 9:
                                 return e.t0 = function(e) {
                                     return e
@@ -1990,29 +2038,29 @@
                 }))).apply(this, arguments)
             }
 
-            function T(e, t, n) {
-                return A.apply(this, arguments)
+            function A(e, t, n) {
+                return j.apply(this, arguments)
             }
 
-            function A() {
-                return (A = i()(a.a.mark(function e(t, n, r) {
-                    var o, i, s;
+            function j() {
+                return (j = i()(a.a.mark(function e(t, n, r) {
+                    var o, i, c;
                     return a.a.wrap(function(e) {
                         for (;;) switch (e.prev = e.next) {
                             case 0:
-                                return o = "Load instrument ".concat(t), Object(E.b)(o), e.next = 4, r;
+                                return o = "Load instrument ".concat(t), Object(z.b)(o), e.next = 4, r;
                             case 4:
-                                if (i = e.sent, s = i && i.id) {
+                                if (i = e.sent, c = i && i.id) {
                                     e.next = 8;
                                     break
                                 }
                                 return e.abrupt("return");
                             case 8:
-                                return Object(c.a)("instrument.loading.time", Object(E.a)(o), {
-                                    instrument: s,
+                                return Object(s.a)("instrument.loading.time", Object(z.a)(o), {
+                                    instrument: c,
                                     pageType: n
-                                }), Object(c.b)("available.instrument", {
-                                    instrument: s,
+                                }), Object(s.b)("available.instrument", {
+                                    instrument: c,
                                     pageType: n
                                 }), e.abrupt("return", i);
                             case 11:
@@ -2022,9 +2070,23 @@
                     }, e, this)
                 }))).apply(this, arguments)
             }
+
+            function V(e) {
+                switch (e) {
+                    case c.PageType.ProductPage:
+                        return "Product";
+                    case c.PageType.CartAjax:
+                    case c.PageType.CartPage:
+                        return "Cart";
+                    case c.PageType.CheckoutPage:
+                        return "Checkout";
+                    default:
+                        return "Other"
+                }
+            }
         },
-        346: function(e, t, n) {
-            var r, a = n(384);
+        347: function(e, t, n) {
+            var r, a = n(386);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2035,19 +2097,18 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        349: function(e, t, n) {
-            var r, a = n(385);
-            "string" == typeof a && (a = [
-                [e.i, a, ""]
-            ]);
-            var o = {
-                singleton: !0
-            };
-            o.transform = r;
-            n(328)(a, o);
-            a.locals && (e.exports = a.locals)
+        348: function(e, t, n) {
+            "use strict";
+            var r = n(381);
+            n.o(r, "Grid") && n.d(t, "Grid", function() {
+                return r.Grid
+            }), n.o(r, "RenderablePaymentButton") && n.d(t, "RenderablePaymentButton", function() {
+                return r.RenderablePaymentButton
+            }), n.o(r, "VerticalGrid") && n.d(t, "VerticalGrid", function() {
+                return r.VerticalGrid
+            })
         },
-        378: function(e, t, n) {
+        379: function(e, t, n) {
             "use strict";
             var r;
             n.d(t, "a", function() {
@@ -2057,7 +2118,7 @@
                     e[e.Cancelled = 0] = "Cancelled", e[e.Failure = 1] = "Failure", e[e.Success = 2] = "Success"
                 }(r || (r = {}))
         },
-        379: function(e, t, n) {
+        380: function(e, t, n) {
             "use strict";
             n.d(t, "a", function() {
                 return c
@@ -2200,7 +2261,19 @@
                     ShopifyPay: r
                 }
         },
-        384: function(e, t, n) {
+        381: function(e, t, n) {
+            var r, a = n(400);
+            "string" == typeof a && (a = [
+                [e.i, a, ""]
+            ]);
+            var o = {
+                singleton: !0
+            };
+            o.transform = r;
+            n(328)(a, o);
+            a.locals && (e.exports = a.locals)
+        },
+        386: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV {\n  display: -webkit-box !important;\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  -webkit-box-align: center !important;\n  -webkit-align-items: center !important;\n  -ms-flex-align: center !important;\n  align-items: center !important;\n  -webkit-box-pack: center !important;\n  -webkit-justify-content: center !important;\n  -ms-flex-pack: center !important;\n  justify-content: center !important;\n  border-width: 1px !important;\n  border-style: solid !important;\n  -webkit-box-sizing: border-box !important;\n  box-sizing: border-box !important;\n  -webkit-box-shadow: 0 0 0 0 transparent !important;\n  box-shadow: 0 0 0 0 transparent !important;\n  font-weight: 500 !important;\n  line-height: 16px !important;\n  padding: 0 !important;\n  text-align: center !important;\n  -webkit-transition: all 0.2s ease-out !important;\n  transition: all 0.2s ease-out !important;\n  width: 100% !important;\n  outline: 0 none !important;\n  font-size: 16px !important;\n}\n\n@media (min-width: 500px) {\n  .shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV {\n    font-size: 14px !important;\n  }\n}\n\n.shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV,\n.shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV * {\n  cursor: pointer !important;\n}\n\n.shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV:active,\n.shopify-cleanslate ._1LP9NPTft85QosIXd3_zOV:focus {\n  -webkit-box-shadow: 0 0 0 4px rgba(25, 144, 198, 0.25) !important;\n  box-shadow: 0 0 0 4px rgba(25, 144, 198, 0.25) !important;\n}\n\n.shopify-cleanslate ._2t-diEduSjYndJuBZ-oZA9 {\n  border-radius: 4px !important;\n  padding: 15px 0 !important;\n  height: 52px !important;\n}\n\n.shopify-cleanslate ._2EiMjnumZ6FVtlC7RViKtj {\n  -webkit-box-flex: 1 !important;\n  -webkit-flex: 1 !important;\n  -ms-flex: 1 !important;\n  flex: 1 !important;\n  -webkit-flex-wrap: wrap !important;\n  -ms-flex-wrap: wrap !important;\n  flex-wrap: wrap !important;\n  padding: 4px !important;\n  min-height: 44px !important;\n  max-height: 60px !important;\n}\n\n.shopify-cleanslate ._2zarRkvJ2j83NID3Q3t0Ix,\n.shopify-cleanslate ._1M9S34W-UyhhDRRQQiV3RH {\n  border-radius: 4px !important;\n  width: 100% !important;\n  height: 54px !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._2zarRkvJ2j83NID3Q3t0Ix {\n    height: 42px !important;\n  }\n}\n\n.shopify-cleanslate ._1vP0lTqRw6QivGeXxy33nW {\n  height: 50px !important;\n  border: 1px solid transparent !important;\n  border-radius: 5px !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._1vP0lTqRw6QivGeXxy33nW {\n    min-width: 160px !important;\n  }\n}\n\n.shopify-cleanslate ._1vP0lTqRw6QivGeXxy33nW span {\n  white-space: pre !important;\n}\n\n.shopify-cleanslate ._3G6VJhJYno-AX3-X38f1TA {\n  padding-left: 12px !important;\n  padding-right: 12px !important;\n}\n\n.shopify-cleanslate ._3G6VJhJYno-AX3-X38f1TA span {\n  white-space: pre !important;\n}", ""]), t.locals = {
                 PaymentButton: "_1LP9NPTft85QosIXd3_zOV",
                 paymentButton: "_1LP9NPTft85QosIXd3_zOV",
@@ -2214,18 +2287,7 @@
                 branded: "_3G6VJhJYno-AX3-X38f1TA"
             }
         },
-        385: function(e, t, n) {
-            (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._3B9zgSZzWeu-LFrQS0x5fR {\n  display: -webkit-box !important;\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  border: 0 !important;\n  padding: 0 !important;\n  -webkit-box-align: center !important;\n  -webkit-align-items: center !important;\n  -ms-flex-align: center !important;\n  align-items: center !important;\n  text-align: center !important;\n  width: 100% !important;\n  outline: 0 none !important;\n  max-height: 54px !important;\n}\n\n.shopify-cleanslate ._3QtvcYbWnyr_bC-nqg5Lym,\n.shopify-cleanslate ._1wSO2kC-04Z8LrytbdjqAo {\n  max-height: 54px !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._3QtvcYbWnyr_bC-nqg5Lym {\n    max-height: 42px !important;\n    border-radius: 4px !important;\n  }\n}\n\n.shopify-cleanslate ._3LXd5isXY56PInwI15KUW6 {\n  max-height: 55px !important;\n  width: 100% !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._3LXd5isXY56PInwI15KUW6 {\n    width: 160px !important;\n  }\n}", ""]), t.locals = {
-                RenderablePayPalButton: "_3B9zgSZzWeu-LFrQS0x5fR",
-                renderablePayPalButton: "_3B9zgSZzWeu-LFrQS0x5fR",
-                Grid: "_3QtvcYbWnyr_bC-nqg5Lym",
-                grid: "_3QtvcYbWnyr_bC-nqg5Lym",
-                VerticalGrid: "_1wSO2kC-04Z8LrytbdjqAo",
-                verticalGrid: "_1wSO2kC-04Z8LrytbdjqAo",
-                onCheckoutFooter: "_3LXd5isXY56PInwI15KUW6"
-            }
-        },
-        389: function(e, t, n) {
+        390: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._2fiNEFIKuofVCSu7xkqaDy {\n  background: transparent !important;\n}\n\n.shopify-cleanslate .sJaABJTtjdaGGYGl9LTjH {\n  background: #ffffff !important;\n  border-color: #ffffff !important;\n  color: #000000 !important;\n}\n\n.shopify-cleanslate .sJaABJTtjdaGGYGl9LTjH:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #ebebeb !important;\n  border-color: #ebebeb !important;\n}\n\n.shopify-cleanslate ._32WLV12P15SH53KwhI_yKe {\n  background: #000000 !important;\n  border-color: #000000 !important;\n  color: #ffffff !important;\n}\n\n.shopify-cleanslate ._32WLV12P15SH53KwhI_yKe:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: black !important;\n  border-color: black !important;\n}\n\n.shopify-cleanslate ._2mV2fXxk50h6DLiHiMmL7_ {\n  background: #ffc520 !important;\n  border-color: #ffc520 !important;\n  color: #253b80 !important;\n}\n\n.shopify-cleanslate ._2mV2fXxk50h6DLiHiMmL7_:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #f6b600 !important;\n  border-color: #f6b600 !important;\n}\n\n.shopify-cleanslate ._3DL4HVlgeOhG7Paj6K8DqS {\n  background: #ffc520 !important;\n  border-color: #ffc520 !important;\n  color: #253b80 !important;\n}\n\n.shopify-cleanslate ._3DL4HVlgeOhG7Paj6K8DqS:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #f6b600 !important;\n  border-color: #f6b600 !important;\n}\n\n.shopify-cleanslate ._1pTNQSw69wSYkpC8hQ7qzP {\n  background: #ffffff !important;\n  border-color: #000000 !important;\n  color: #000000 !important;\n}\n\n.shopify-cleanslate ._1pTNQSw69wSYkpC8hQ7qzP:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #ebebeb !important;\n  border-color: black !important;\n}\n\n.shopify-cleanslate ._3xia0N5Q9Mk6-VTLoOX95a {\n  background: #202e78 !important;\n  border-color: #202e78 !important;\n  color: #ffffff !important;\n}\n\n.shopify-cleanslate ._3xia0N5Q9Mk6-VTLoOX95a:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #172258 !important;\n  border-color: #172258 !important;\n}\n\n.shopify-cleanslate ._1Z888kx5GQvmCK6mdNF2H2 {\n  background: #fad676 !important;\n  border-color: #fad676 !important;\n  color: #333e48 !important;\n}\n\n.shopify-cleanslate ._1Z888kx5GQvmCK6mdNF2H2:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #f9ca4f !important;\n  border-color: #f9ca4f !important;\n}\n\n.shopify-cleanslate ._1iLcX49_Dn18ynkIv_3he1 {\n  background: #fad676 !important;\n  border-color: #fad676 !important;\n  color: #333e48 !important;\n}\n\n.shopify-cleanslate ._1iLcX49_Dn18ynkIv_3he1:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #f9ca4f !important;\n  border-color: #f9ca4f !important;\n}\n\n.shopify-cleanslate ._15nImgEpi3SNcdLx14shWb {\n  background: #ffffff !important;\n  border-color: #ffffff !important;\n  color: #000000 !important;\n}\n\n.shopify-cleanslate ._15nImgEpi3SNcdLx14shWb:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: #ebebeb !important;\n  border-color: #ebebeb !important;\n}\n\n.shopify-cleanslate ._1GxIZiuIYnVTrkxMSSrber {\n  background: #000000 !important;\n  border-color: #000000 !important;\n  color: #ffffff !important;\n}\n\n.shopify-cleanslate ._1GxIZiuIYnVTrkxMSSrber:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: black !important;\n  border-color: black !important;\n}\n\n.shopify-cleanslate ._347Ak7kw1Up8RwgeJir7HH,\n.shopify-cleanslate ._2-dUletcCZ2ZL1aaH0GXxT {\n  -webkit-transition-duration: 100ms !important;\n  transition-duration: 100ms !important;\n  background: white !important;\n  border-width: 1px !important;\n  border-color: #187bbd !important;\n  color: #187bbd !important;\n}\n\n.shopify-cleanslate ._347Ak7kw1Up8RwgeJir7HH:hover:not(.GZHgfzSnue0w98GtPtQ3D),\n.shopify-cleanslate ._2-dUletcCZ2ZL1aaH0GXxT:hover:not(.GZHgfzSnue0w98GtPtQ3D) {\n  background: rgba(24, 123, 189, 0.1) !important;\n}\n\n.shopify-cleanslate ._2oLha9_W2Vf5YrEjYc7-4A:hover {\n  opacity: 0.8 !important;\n}\n\n.shopify-cleanslate ._1iLcX49_Dn18ynkIv_3he1 svg,\n.shopify-cleanslate ._1Z888kx5GQvmCK6mdNF2H2 svg {\n  position: relative !important;\n  top: 4px !important;\n}\n\n.shopify-cleanslate ._3DL4HVlgeOhG7Paj6K8DqS svg,\n.shopify-cleanslate ._2mV2fXxk50h6DLiHiMmL7_ svg {\n  position: relative !important;\n  top: 1px !important;\n}\n\n.shopify-cleanslate .GZHgfzSnue0w98GtPtQ3D {\n  opacity: 0.6 !important;\n}\n\n.shopify-cleanslate .GZHgfzSnue0w98GtPtQ3D,\n.shopify-cleanslate .GZHgfzSnue0w98GtPtQ3D * {\n  cursor: default !important;\n}\n\n.shopify-cleanslate .GZHgfzSnue0w98GtPtQ3D:active,\n.shopify-cleanslate .GZHgfzSnue0w98GtPtQ3D:focus {\n  -webkit-box-shadow: none !important;\n  box-shadow: none !important;\n}", ""]), t.locals = {
                 loading: "_2fiNEFIKuofVCSu7xkqaDy",
                 "apple-pay--light": "sJaABJTtjdaGGYGl9LTjH",
@@ -2256,8 +2318,8 @@
                 checkout: "_2oLha9_W2Vf5YrEjYc7-4A"
             }
         },
-        390: function(e, t, n) {
-            var r, a = n(389);
+        391: function(e, t, n) {
+            var r, a = n(390);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2268,7 +2330,7 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        391: function(e, t, n) {
+        392: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._12q6nQUF3Kq8xpGLouLIEs {\n  font-weight: 500 !important;\n  color: #000017 !important;\n}\n\n.shopify-cleanslate ._3GMtX2px5pNru4ptyThvFU {\n  font-weight: normal !important;\n  color: #969696 !important;\n  font-size: 14px !important;\n}\n\n@media (min-width: 500px) {\n  .shopify-cleanslate ._3GMtX2px5pNru4ptyThvFU {\n    font-size: 12px !important;\n  }\n}\n\n.shopify-cleanslate ._1uGbmPA-dl08TNz9N6Ldqe {\n  color: #187bbd !important;\n}\n\n.shopify-cleanslate ._11GJAaBiShTVGYuXppoYvE {\n  position: absolute !important;\n  overflow: hidden !important;\n  clip: rect(0 0 0 0) !important;\n  height: 1px !important;\n  width: 1px !important;\n  margin: -1px !important;\n  padding: 0 !important;\n  border: 0 !important;\n}", ""]), t.locals = {
                 strong: "_12q6nQUF3Kq8xpGLouLIEs",
                 subdued: "_3GMtX2px5pNru4ptyThvFU",
@@ -2276,8 +2338,8 @@
                 visuallyHidden: "_11GJAaBiShTVGYuXppoYvE"
             }
         },
-        392: function(e, t, n) {
-            var r, a = n(391);
+        393: function(e, t, n) {
+            var r, a = n(392);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2288,14 +2350,14 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        393: function(e, t, n) {
+        394: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._3vpHgUZUiRHmjrBDI5iCuC {\n  height: 16px !important;\n  width: 16px !important;\n}\n\n.shopify-cleanslate ._2iQfeS017Z7yMIyNzTi6Ae {\n  height: 32px !important;\n  width: 32px !important;\n}", ""]), t.locals = {
                 small: "_3vpHgUZUiRHmjrBDI5iCuC",
                 large: "_2iQfeS017Z7yMIyNzTi6Ae"
             }
         },
-        394: function(e, t, n) {
-            var r, a = n(393);
+        395: function(e, t, n) {
+            var r, a = n(394);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2306,7 +2368,7 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        395: function(e, t, n) {
+        396: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._2LK42tJw1F_Iq-xSwQfEZg {\n  fill: #000017 !important;\n}\n\n.shopify-cleanslate ._11fWyk39iLOBFAEZZtj45D {\n  fill: #d9d9d9 !important;\n}\n\n.shopify-cleanslate ._3Xq1NVFvo9DAJ-49d_2BQL {\n  fill: #969696 !important;\n}\n\n.shopify-cleanslate ._3NW7JLy6tmpxHr3DyMRTx9 {\n  fill: #ffffff !important;\n}\n\n.shopify-cleanslate .fC0Pj2ejaCSRmoaQIcgup {\n  fill: #e7a321 !important;\n}", ""]), t.locals = {
                 black: "_2LK42tJw1F_Iq-xSwQfEZg",
                 "gray-dark": "_11fWyk39iLOBFAEZZtj45D",
@@ -2317,8 +2379,8 @@
                 orange: "fC0Pj2ejaCSRmoaQIcgup"
             }
         },
-        396: function(e, t, n) {
-            var r, a = n(395);
+        397: function(e, t, n) {
+            var r, a = n(396);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2329,7 +2391,7 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        397: function(e, t, n) {
+        398: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate .bp01pMHFBVS3SyhYtJKk {\n  display: inline-block !important;\n  line-height: 0 !important;\n}\n\n.shopify-cleanslate .h7yAG5cgdBp_GhZjXmVIA {\n  display: inline-block !important;\n  max-width: 100% !important;\n}\n\n.shopify-cleanslate .RSpxmO_btjFPcYGWD4UBS {\n  -webkit-animation: _1vrWCeMW3LqbVebfi8vmBh linear 1s infinite !important;\n  animation: _1vrWCeMW3LqbVebfi8vmBh linear 1s infinite !important;\n}\n\n@-webkit-keyframes _1vrWCeMW3LqbVebfi8vmBh {\n  from {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes _1vrWCeMW3LqbVebfi8vmBh {\n  from {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}", ""]), t.locals = {
                 Icon: "bp01pMHFBVS3SyhYtJKk",
                 icon: "bp01pMHFBVS3SyhYtJKk",
@@ -2339,8 +2401,8 @@
                 spin: "_1vrWCeMW3LqbVebfi8vmBh"
             }
         },
-        398: function(e, t, n) {
-            var r, a = n(397);
+        399: function(e, t, n) {
+            var r, a = n(398);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
@@ -2351,13 +2413,24 @@
             n(328)(a, o);
             a.locals && (e.exports = a.locals)
         },
-        407: function(e, t, n) {
+        400: function(e, t, n) {
+            (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate ._1qHzu06EhANVVG3mlfU6Ho {\n  display: -webkit-box !important;\n  display: -webkit-flex !important;\n  display: -ms-flexbox !important;\n  display: flex !important;\n  border: 0 !important;\n  padding: 0 !important;\n  -webkit-box-align: center !important;\n  -webkit-align-items: center !important;\n  -ms-flex-align: center !important;\n  align-items: center !important;\n  text-align: center !important;\n  width: 100% !important;\n  outline: 0 none !important;\n  max-height: 54px !important;\n}\n\n.shopify-cleanslate ._1n3zwJXRK30xbubjNiZsKV,\n.shopify-cleanslate ._9ATKCDN1-_J5vniMChq1n {\n  max-height: 54px !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._1n3zwJXRK30xbubjNiZsKV {\n    max-height: 42px !important;\n    border-radius: 4px !important;\n  }\n}\n\n.shopify-cleanslate ._1QboQNLfVCR4SedSyFNdtF {\n  max-height: 55px !important;\n  width: 100% !important;\n}\n\n@media (min-width: 750px) {\n  .shopify-cleanslate ._1QboQNLfVCR4SedSyFNdtF {\n    width: 160px !important;\n  }\n}", ""]), t.locals = {
+                RenderablePaymentButton: "_1qHzu06EhANVVG3mlfU6Ho",
+                renderablePaymentButton: "_1qHzu06EhANVVG3mlfU6Ho",
+                Grid: "_1n3zwJXRK30xbubjNiZsKV",
+                grid: "_1n3zwJXRK30xbubjNiZsKV",
+                VerticalGrid: "_9ATKCDN1-_J5vniMChq1n",
+                verticalGrid: "_9ATKCDN1-_J5vniMChq1n",
+                onCheckoutFooter: "_1QboQNLfVCR4SedSyFNdtF"
+            }
+        },
+        409: function(e, t, n) {
             (t = e.exports = n(329)(!1)).push([e.i, ".shopify-cleanslate .VoW3UuJKYxZJHMpUkDNUv {\n  position: absolute !important;\n  top: 0 !important;\n  clip: rect(1px, 1px, 1px, 1px) !important;\n  overflow: hidden !important;\n  height: 1px !important;\n  width: 1px !important;\n  padding: 0 !important;\n  border: 0 !important;\n}", ""]), t.locals = {
                 visuallyhidden: "VoW3UuJKYxZJHMpUkDNUv"
             }
         },
-        408: function(e, t, n) {
-            var r, a = n(407);
+        410: function(e, t, n) {
+            var r, a = n(409);
             "string" == typeof a && (a = [
                 [e.i, a, ""]
             ]);
