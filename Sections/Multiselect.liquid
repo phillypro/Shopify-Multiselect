@@ -1,7 +1,14 @@
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-11.min.js' | script_tag }}
+{% comment %}
+{{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-1.min.js' | script_tag }}
+{{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-5.min.js' | script_tag }}
+{{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-0.min.js' | script_tag }}
+{{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-3.min.js' | script_tag }}
+{% endcomment %}
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-2.min.js' | script_tag }}
-{% if section.settings.animate %}
+
 <script>
+{% if section.settings.animate %}
 var callbackMultiselect = function(){
   // Handler when the DOM is fully loaded
   if(!window.ScrollReveal) {
@@ -812,7 +819,7 @@ afterReveal: function(el) {
 "type": "checkbox",
 "label": "Use Images for Colors",
 "default":true,
-"info": "When Checked it will use an image in your theme that matches the name of your color option. If your color option is called \"Natural Black\" crop a 150x150 image of the color [Click Here For Crop Tool](https://picresize.com/) save the file with the name \"natural-black.jpg\" and then upload it to your theme, you're simply replacing each space with - and making sure all latters are lowercase"
+"info": "When Checked it will use an image in your files that matches the name of your color option. If your color option is called \"Natural Black\" crop a 150x150 image of the color [Click Here For Crop Tool](https://picresize.com/) save the file with the name \"natural-black.jpg\" and then upload it to your files, you're simply replacing each space with - and making sure all latters are lowercase"
 
 }
 ]
