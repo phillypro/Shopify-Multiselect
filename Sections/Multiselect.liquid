@@ -720,11 +720,10 @@
 {% endif %}
 {% endif %}
 {% endcase %}
-{% endfor %}
+{% endfor %}  
+
+{% if section.settings.animate %}
 <script>
-
-
-  {% if section.settings.animate %}
 var element{{ product.id }} = document.querySelector('#Multiselect_{{ product.id }}.animate');
 var elementHeight{{ product.id }} = element{{ product.id }}.clientHeight;
      
@@ -765,29 +764,9 @@ function animate{{ product.id }}() {
       element{{ product.id }}.classList.add('effect');
   }
 }   
-  
-  function sr() {
-
-      
-      
-      //if not we go body
-      ScrollReveal().reveal( document.querySelectorAll('#Multiselect_{{ product.id }}.animate .first .multi-swatch-element'), {
-rotate: { x: 0, y: 0, z: 0 },   
-scale: 1, 
-interval: 60, 
-duration: 500,  
-distance: '40px',
-easing: 'ease-out',  
-opacity: 0,
-viewFactor: 0.8, 
-afterReveal: function(el) {
-  ScrollReveal().clean(el);
-}}); 
-    }
-  
-  
-  {% endif %}
-</script>
+ 
+</script> 
+{% endif %}
 {% schema %}
 {
 "name": "Multiselect",
