@@ -6,69 +6,6 @@
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-3.min.js' | script_tag }}
 {% endcomment %}
 {{ 'https://cdn.jsdelivr.net/gh/phillypro/Shopify-Multiselect/multiselect-2.min.js' | script_tag }}
-
-<script>
-{% if section.settings.animate %}
-var callbackMultiselect = function(){
-  // Handler when the DOM is fully loaded
-  if(!window.ScrollReveal) {
-    // add script
-    var script = document.createElement("script");
-    script.type = "text/javascript";   
-    script.src = 'https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js';
-    document.getElementsByTagName("head")[0].appendChild(script);
-  }
-};
-
-if (
-    document.readyState === "complete" ||
-    (document.readyState !== "loading" && !document.documentElement.doScroll)
-) {
-  callbackMultiselect();
-} else {
-  document.addEventListener("DOMContentLoaded", callbackMultiselect);
-}
-{% endif %}  
-  
-  
-function deferMultiselect(methodMultiselect) {
-    if (window.ScrollReveal) {
-        methodMultiselect();
-    } else {
-        setTimeout(function() { deferMultiselect(methodMultiselect) }, 50);
-    }
-}
-deferMultiselect(function () {  
-  {% if section.settings.animate %}
-     
- 
-  sr();
-
-  
-  
-  function sr() {
-
-      
-      
-      //if not we go body
-      ScrollReveal().reveal( document.querySelectorAll('#Multiselect_{{ product.id }}.animate .first .multi-swatch-element'), {
-rotate: { x: 0, y: 0, z: 0 },   
-scale: 1, 
-interval: 60, 
-duration: 500,  
-distance: '40px',
-easing: 'ease-out',  
-opacity: 0,
-viewFactor: 0.8, 
-afterReveal: function(el) {
-  ScrollReveal().clean(el);
-}}); 
-    }
-  
-  
-  {% endif %}
-});
-</script>
 {% for block in section.blocks %}
 {% case block.type %}
 {% when 'Multiselect' %}
@@ -784,6 +721,73 @@ afterReveal: function(el) {
 {% endif %}
 {% endcase %}
 {% endfor %}
+<script>
+
+
+  {% if section.settings.animate %}
+var element{{ product.id }} = document.querySelector('#Multiselect_{{ product.id }}.animate');
+var elementHeight{{ product.id }} = element{{ product.id }}.clientHeight;
+     
+// listen for scroll event and call animate function
+setTimeout(function() {                                                     
+document.removeEventListener('scroll', animate{{ product.id }});                                     
+document.addEventListener('scroll', animate{{ product.id }});
+document.dispatchEvent(new CustomEvent('scroll'));  
+}, 600);
+  
+  
+// check if element is in view
+function inView{{ product.id }}() {
+
+  // get window height
+  var windowHeight = window.innerHeight;
+  // get number of pixels that the document is scrolled
+  var scrollY = window.scrollY || window.pageYOffset;
+  
+  // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+  var scrollPosition = scrollY + windowHeight;
+  // get element position (distance from the top of the page to the bottom of the element)
+  var elementPosition = element{{ product.id }}.getBoundingClientRect().top + scrollY + (elementHeight{{ product.id }} / 5);
+  
+  // is scroll position greater than element position? (is element in view?)
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  
+  return false;
+}
+  
+// animate element when it is in view
+function animate{{ product.id }}() {
+  // is element in view?
+  if (inView{{ product.id }}()) {
+      // element is in view, add class to element
+      element{{ product.id }}.classList.add('effect');
+  }
+}   
+  
+  function sr() {
+
+      
+      
+      //if not we go body
+      ScrollReveal().reveal( document.querySelectorAll('#Multiselect_{{ product.id }}.animate .first .multi-swatch-element'), {
+rotate: { x: 0, y: 0, z: 0 },   
+scale: 1, 
+interval: 60, 
+duration: 500,  
+distance: '40px',
+easing: 'ease-out',  
+opacity: 0,
+viewFactor: 0.8, 
+afterReveal: function(el) {
+  ScrollReveal().clean(el);
+}}); 
+    }
+  
+  
+  {% endif %}
+</script>
 {% schema %}
 {
 "name": "Multiselect",
@@ -819,7 +823,7 @@ afterReveal: function(el) {
 "type": "checkbox",
 "label": "Use Images for Colors",
 "default":true,
-"info": "When Checked it will use an image in your files that matches the name of your color option. If your color option is called \"Natural Black\" crop a 150x150 image of the color [Click Here For Crop Tool](https://picresize.com/) save the file with the name \"natural-black.jpg\" and then upload it to your files, you're simply replacing each space with - and making sure all latters are lowercase"
+"info": "When Checked it will use an image in your theme that matches the name of your color option. If your color option is called \"Natural Black\" crop a 150x150 image of the color [Click Here For Crop Tool](https://picresize.com/) save the file with the name \"natural-black.jpg\" and then upload it to your theme, you're simply replacing each space with - and making sure all latters are lowercase"
 
 }
 ]
@@ -966,7 +970,28 @@ $multiselect-quantity-font: #fff;
 #shopify-section-Multiselect {
 width: 100%;
   & .animate .first .multi-swatch-element {
-   visibility:hidden;
+   opacity:0;
+    will-change: transform;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+  }
+  & .animate.effect .first .multi-swatch-element {
+       -webkit-animation-name: fadeInUp-Multiselect;
+         animation-name: fadeInUp-Multiselect;
+            -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    @for $i from 1 to 12 {
+     &:nth-of-type(#{$i}) { animation-delay: $i * 0.060s; -webkit-animation-delay: $i * 0.060s;}
+    }
   }
   & .multi-swatch {
  margin-bottom: 20px;   
@@ -997,7 +1022,7 @@ width: 100%;
     flex-grow: 1;
     min-width: 25%;
     @include transition(opacity,0.3s);  
-      &.soldout {
+      &.soldout * {
            opacity: 0.5;
       }
       & label {
@@ -1168,6 +1193,20 @@ padding: 5px 11px;
     }
   }
 }
+
+
+@keyframes fadeInUp-Multiselect {
+   0% {
+      opacity: 0;
+      transform: translateY(50px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}   
+
 {% endstylesheet %} 
 {% javascript %}            
-{% endjavascript %}      
+{% endjavascript %}                            
+ 
