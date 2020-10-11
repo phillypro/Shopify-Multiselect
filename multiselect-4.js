@@ -24,7 +24,7 @@
                         return s()(this, t), (e = m()(this, f()(t).call(this, n))).observe = function() {
                             var n = e.state.visibleCartButtons,
                                 t = e.props.form.elements,
-                                i = e.props.form.querySelector('.multiselect_wrap') ? !(!e.props.form.querySelector('[name="id"]').id || !e.props.form.querySelector('[name="id"]').value) : !(!t.id || !t.id.value) && !Number.isNaN(Number(t.id.value)),
+                                i = e.props.form.querySelector('.multiselect_wrap') ? !(!e.props.form.querySelector('select[name="id"]').id || !e.props.form.querySelector('select[name="id"]').value) : !(!t.id || !t.id.value) && !Number.isNaN(Number(t.id.value)),
                                 o = n.length > 0 && n.every(function(n) {
                                     return n.disabled
                                 });
